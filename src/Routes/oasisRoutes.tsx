@@ -12,3 +12,13 @@ export const oasisEntryForm = createRoute({
   )
   // beforeLoad: ({ navigate }) => privateRouteHandler(navigate)
 });
+
+export const oasisEntryView = createRoute({
+  getParentRoute: () => tanstackRootRoute,
+  path: AppRoutes.oasis.viewEntryData,
+  component: lazyRouteComponent(
+    async (): Promise<Record<string, unknown>> =>
+      await import('@/Pages/oasis/OasisFormEntryView')
+  )
+  // beforeLoad: ({ navigate }) => privateRouteHandler(navigate)
+});

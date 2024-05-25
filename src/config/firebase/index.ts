@@ -6,7 +6,14 @@ import {
   getIdToken,
   createUserWithEmailAndPassword
 } from 'firebase/auth';
-import { getFirestore, addDoc, getDoc, collection } from 'firebase/firestore';
+import {
+  getFirestore,
+  addDoc,
+  getDoc,
+  collection,
+  doc,
+  query
+} from 'firebase/firestore';
 import { IZOasisEntryForm } from '@/Types/oasis';
 
 const firebaseConfig = {
@@ -65,4 +72,18 @@ export const addOasisFormEntryInFirestore = async (data: IZOasisEntryForm) => {
   const _item = await getDoc(_itemRef);
 
   return _item.data();
+};
+
+export const getOasisFormEntryFromFirestore = async (
+  oasisFormEntryQRCode: string
+) => {
+  try {
+    const _collectionRef = doc(_firebaseFirestore, 'oasis');
+
+    const _itemRef = await getDoc(_collectionRef);
+
+    return _itemRef.data();
+  } catch (error) {
+    return null;
+  }
 };

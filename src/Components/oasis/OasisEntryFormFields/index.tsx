@@ -33,6 +33,11 @@ interface OasisEntryFormFieldsI {
 
 // #endregion
 
+const paymentMethodsOptions = [
+  { label: 'Bank Al Habib', value: 'bankAlHabib' },
+  { label: 'Faysal Bank', value: 'faysalBank' }
+];
+
 const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
   inputMaxWidth = '70rem',
   width = '100%'
@@ -61,6 +66,26 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
       style={containerStyle}
       className='maxSm:w-[100%!important] maxSm:max-w-[100%!important]'
     >
+      <ZInput
+        label='Oasis QR Code Number*'
+        name='qrCodeNumber'
+        value={values?.qrCodeNumber}
+        touched={touched?.qrCodeNumber}
+        isValid={
+          touched.qrCodeNumber !== undefined
+            ? touched.qrCodeNumber && !isZNonEmptyString(errors?.qrCodeNumber)
+            : true
+        }
+        errorNode={errors?.qrCodeNumber}
+        className='w-full'
+        onChange={(e) => {
+          handleChange(e);
+        }}
+        onBlur={(e) => {
+          handleBlur(e);
+        }}
+      />
+
       <ZInput
         label='Plot Number*'
         name='plotNumber'
@@ -559,11 +584,9 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
       <ZSelect
         label='Payment Method*'
         name='paymentMethod'
-        value={[
-          { label: 'Cash', value: 'cash' },
-          { label: 'Cheque', value: 'cheque' },
-          { label: 'Bank Transfer', value: 'bankTransfer' }
-        ].find((item) => item.value === values?.paymentMethod)}
+        value={paymentMethodsOptions.find(
+          (item) => item.value === values?.paymentMethod
+        )}
         isValid={
           touched.paymentMethod !== undefined
             ? touched.paymentMethod && !isZNonEmptyString(errors?.paymentMethod)
@@ -571,11 +594,7 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         }
         errorNode={errors?.paymentMethod}
         className='w-full mt-4'
-        options={[
-          { label: 'Cash', value: 'cash' },
-          { label: 'Cheque', value: 'cheque' },
-          { label: 'Bank Transfer', value: 'bankTransfer' }
-        ]}
+        options={paymentMethodsOptions}
         onChange={(e) => {
           setFieldValue('paymentMethod', e?.value);
           setFieldTouched('paymentMethod', true);

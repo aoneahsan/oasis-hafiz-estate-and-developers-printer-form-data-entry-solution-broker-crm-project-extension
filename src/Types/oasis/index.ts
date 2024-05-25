@@ -1,6 +1,8 @@
 export interface IZOasisEntryForm {
   id?: string;
 
+  qrCodeNumber?: string;
+
   // Property selection
   plotNumber?: string;
   registrationNumber?: string;

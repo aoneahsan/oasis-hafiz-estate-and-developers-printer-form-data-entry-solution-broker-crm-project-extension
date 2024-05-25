@@ -107,7 +107,7 @@ const LogoutModal: React.FC<{
 const ZAuthNavigation: React.FC = () => {
   // #region Custom Hooks
   const { openSidebar } = useZSideBar(ZNavSidebarContent);
-  const sa = useRecoilValue(zUserRStateAtom);
+  const zUserRState = useRecoilValue(zUserRStateAtom);
 
   // #region Modals
   const { showModal: showLogoutModal } = useZModal({
@@ -148,12 +148,14 @@ const ZAuthNavigation: React.FC = () => {
         </div>
 
         <span className='maxMd:hidden'>
-          <ExitSvg
-            className='w-[3rem] h-[3rem] cursor-pointer text-primary'
-            onClick={() => {
-              showLogoutModal();
-            }}
-          />
+          {!!zUserRState && (
+            <ExitSvg
+              className='w-[3rem] h-[3rem] cursor-pointer text-primary'
+              onClick={() => {
+                showLogoutModal();
+              }}
+            />
+          )}
         </span>
 
         <div className='md:hidden'>
@@ -170,6 +172,8 @@ const ZAuthNavigation: React.FC = () => {
 const ZNavSidebarContent: React.FC<{ closeSidebar: () => void }> = ({
   closeSidebar
 }) => {
+  const zUserRState = useRecoilValue(zUserRStateAtom);
+
   // #region Modals
   const { showModal: showLogoutModal } = useZModal({
     component: LogoutModal,
@@ -199,16 +203,18 @@ const ZNavSidebarContent: React.FC<{ closeSidebar: () => void }> = ({
       </div>
 
       <div className='w-full py-3'>
-        <ZButton
-          className='w-full uppercase flex items-center justify-center text-[.8rem]'
-          fill={ZFill.outline}
-          color={ZColorEnum.tertiary}
-          onClick={() => {
-            showLogoutModal();
-          }}
-        >
-          <ExitSvg className='me-2 text-tertiary mb-[2px]' /> Logout
-        </ZButton>
+        {!!zUserRState && (
+          <ZButton
+            className='w-full uppercase flex items-center justify-center text-[.8rem]'
+            fill={ZFill.outline}
+            color={ZColorEnum.tertiary}
+            onClick={() => {
+              showLogoutModal();
+            }}
+          >
+            <ExitSvg className='me-2 text-tertiary mb-[2px]' /> Logout
+          </ZButton>
+        )}
       </div>
     </div>
   );

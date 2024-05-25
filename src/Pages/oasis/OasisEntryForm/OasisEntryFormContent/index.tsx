@@ -24,6 +24,10 @@ import { productVector } from '@/assets';
 import OasisEntryFormFields from '@/Components/oasis/OasisEntryFormFields';
 import { IZOasisEntryForm } from '@/Types/oasis';
 import { addOasisFormEntryInFirestore } from '@/config/firebase';
+import {
+  showErrorNotification,
+  showSuccessNotification
+} from '@/utils/Helpers/Notification';
 // #endregion
 
 const OasisEntryFormContent: React.FC = () => {
@@ -45,9 +49,15 @@ const OasisEntryFormContent: React.FC = () => {
         _resData
       });
 
+      showSuccessNotification(
+        'Oasis Entry Form has been submitted successfully'
+      );
+
       callBack();
     } catch (error) {
       reportCustomError(error);
+
+      showErrorNotification('Failed to submit Oasis Entry Form');
     } finally {
       setCompState({ ...compState, processing: false });
     }
@@ -67,44 +77,48 @@ const OasisEntryFormContent: React.FC = () => {
           </h2>
           <ZFormik
             initialValues={{
+              qrCodeNumber: '',
+
               // Property selection
-              plotNumber: 'asd',
-              registrationNumber: 'asd',
-              serialNumber: 'asd',
-              plotType: 'asd',
-              plotSize: 'asd',
-              extraPercentageForLocationCategory: 'asd',
-              extraPercentageForLocationCategoryReason: 'asd',
+              plotNumber: '',
+              registrationNumber: '',
+              serialNumber: '',
+              plotType: '',
+              plotSize: '',
+              extraPercentageForLocationCategory: '',
+              extraPercentageForLocationCategoryReason: '',
 
               // Personal Information
-              applicantName: 'asd',
-              guardianName: 'asd',
-              relationWithGuardian: 'asd',
-              cnicNumber: 'asd',
-              passportNumber: 'asd',
-              mailAddress: 'asd',
-              permanentAddress: 'asd',
-              phoneNumber: 'asd',
-              mobileNumber: 'asd',
+              applicantName: '',
+              guardianName: '',
+              relationWithGuardian: '',
+              cnicNumber: '',
+              passportNumber: '',
+              mailAddress: '',
+              permanentAddress: '',
+              phoneNumber: '',
+              mobileNumber: '',
 
               // Nominee Information
-              nomineeName: 'asd',
-              nomineeGuardianName: 'asd',
-              nomineeRelationWithGuardian: 'asd',
-              nomineeCnicNumber: 'asd',
-              nomineeRelationWithApplicant: 'asd',
-              nomineeAddress: 'asd',
-              nomineePhoneNumber: 'asd',
-              nomineeMobileNumber: 'asd',
+              nomineeName: '',
+              nomineeGuardianName: '',
+              nomineeRelationWithGuardian: '',
+              nomineeCnicNumber: '',
+              nomineeRelationWithApplicant: '',
+              nomineeAddress: '',
+              nomineePhoneNumber: '',
+              nomineeMobileNumber: '',
 
               // Payment Information
-              paymentMethod: 'cash'
+              paymentMethod: ''
             }}
             enableReinitialize={true}
             validate={(values) => {
-              const errors: { default_currency?: string } = {};
+              const errors: { qrCodeNumber?: string } = {};
               validateFields(
                 [
+                  'qrCodeNumber',
+
                   // Property selection
                   'plotNumber', // 1
                   'registrationNumber', // 2
@@ -165,14 +179,24 @@ const OasisEntryFormContent: React.FC = () => {
                   zValidationRuleE.string,
                   zValidationRuleE.string,
                   zValidationRuleE.string,
+                  zValidationRuleE.string,
                   zValidationRuleE.string
                 ]
               );
+
+              try {
+                const _qrCodeNumber = parseInt(values.qrCodeNumber);
+                if (_qrCodeNumber < 1 || _qrCodeNumber > 5000) {
+                  errors.qrCodeNumber =
+                    'QR Code Number should be between 1-5000';
+                }
+              } catch (error) {}
 
               return errors;
             }}
             onSubmit={(values, { resetForm }) => {
               const {
+                qrCodeNumber,
                 plotNumber,
                 registrationNumber,
                 serialNumber,
@@ -202,6 +226,7 @@ const OasisEntryFormContent: React.FC = () => {
 
               formikSubmitHandler(
                 {
+                  qrCodeNumber,
                   plotNumber,
                   registrationNumber,
                   serialNumber,
