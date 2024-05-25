@@ -1,9 +1,12 @@
 GENERATE_SOURCEMAP=false
-VITE_TITLE="Invoice"
-VITE_BACKEND_URL='http://localhost:8000'
-VITE_BACKEND_URL_PROD='We need to provide the backend app url of the production app, "{domain}", without the ending "/" and the rest will get handled by the frontend app.'
-VITE_API_URL='http://localhost:8000/api'
-VITE_API_URL_PROD='We need to provide the backend API url of the production app, "{domain}/api" and the rest will get handled by the frontend app.'
-VITE_CRYPTO_SECRET=''
+VITE_TITLE="Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)"
+VITE_CRYPTO_SECRET='Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)'
 
-# Added By Developer
+# Firebase Keys
+VITE_FRB_API_KEY=""
+VITE_FRB_AUTH_DOMAIN=""
+VITE_FRB_PROJECT_ID=""
+VITE_FRB_STORAGE_BUCKET=""
+VITE_FRB_MESSAGING_SENDER_ID=""
+VITE_FRB_APP_ID=""
+VITE_FRB_MEASUREMENT_ID=""

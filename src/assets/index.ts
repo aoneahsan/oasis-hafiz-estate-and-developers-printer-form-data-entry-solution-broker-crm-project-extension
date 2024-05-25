@@ -1,5 +1,5 @@
 // Generics
-import productLogo from './images/global/logo.png';
+// import productLogo from './images/global/logo.png';
 import arrowDown from './images/global/arrow-down.png';
 import paidTag from './images/global/paid-tag.png';
 import ratioDot from './images/global/ratio-dot.png';
@@ -35,6 +35,12 @@ import ZLockSvg from './svgs/Lock.svg';
 // Lottie's
 import flowLottie from './lotties/flow.json';
 import paymentAnimationLottie from './lotties/paymentAnimation.json';
+
+// Oasis Project Exports
+import OasisLogo from './images/oasis/oasis.png';
+import HafizEstateLogo from './images/oasis/hafiz-estate.png';
+
+const productLogo = OasisLogo;
 
 // Exporting all images
 export {
@@ -74,5 +80,9 @@ export {
   CheckSvg,
   EllipsisSvg,
   Z404Svg,
-  ZLockSvg
+  ZLockSvg,
+
+  // Oasis Project
+  OasisLogo,
+  HafizEstateLogo
 };

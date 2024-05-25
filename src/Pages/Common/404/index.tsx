@@ -19,7 +19,6 @@ import { useZNavigate } from '@/ZHooks/Navigation.hook';
 // #endregion
 
 // #region ---- Store Imports ----
-import { IsAuthenticatedRStateSelector } from '@/Store/Auth/index.recoil';
 
 // #endregion
 
@@ -27,6 +26,7 @@ import { IsAuthenticatedRStateSelector } from '@/Store/Auth/index.recoil';
 import { Z404Svg } from '@/assets';
 import { AppRoutes } from '@/Routes/AppRoutes';
 import { ZInvoiceTypeE } from '@/Types/Auth/Invoice';
+import { zUserIsAuthenticatedRStateAtom } from '@/Store/Auth/User';
 
 // #endregion
 
@@ -35,8 +35,9 @@ import { ZInvoiceTypeE } from '@/Types/Auth/Invoice';
 // #endregion
 
 const NotFound404Page: React.FC = () => {
-  const isAuthenticated = useRecoilValue(IsAuthenticatedRStateSelector);
   const navigate = useZNavigate();
+  const isAuthenticated = useRecoilValue(zUserIsAuthenticatedRStateAtom);
+
   return (
     <div className='w-full lg:pt-[4rem] maxLg:pt-[2rem] pb-[2rem] h-screen bg-secondary text-center flex items-center justify-center flex-col'>
       <Z404Svg className='w-[10rem] h-[10rem] text-primary' />
@@ -47,12 +48,9 @@ const NotFound404Page: React.FC = () => {
       <ZButton
         className='uppercase mt-9'
         onClick={() => {
-          if (isAuthenticated) {
+          if (!!isAuthenticated) {
             void navigate({
-              to: AppRoutes.authRoutes.invoices,
-              params: {
-                invoiceType: ZInvoiceTypeE.inv
-              }
+              to: AppRoutes.oasis.entryForm
             });
           } else {
             void navigate({

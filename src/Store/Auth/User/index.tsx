@@ -1,8 +1,8 @@
 import { atom } from 'recoil';
 
-import { type ZAuthI } from '@/Types/Auth/index.type';
+import { User } from 'firebase/auth';
 
-export const ZUserRStateAtom = atom<ZAuthI | null>({
-  key: 'ZUserRStateAtom_Key',
-  default: {}
+export const zUserIsAuthenticatedRStateAtom = atom<User | null>({
+  key: 'zUserIsAuthenticatedRStateAtom_key',
+  default: null
 });

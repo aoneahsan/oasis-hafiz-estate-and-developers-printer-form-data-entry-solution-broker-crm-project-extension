@@ -50,11 +50,6 @@ import {
 
 // #endregion
 
-// #region ---- Store Imports ----
-import { ZUserRStateAtom } from '@/Store/Auth/User';
-
-// #endregion
-
 // #region ---- Images Imports ----
 
 // #endregion
@@ -99,10 +94,6 @@ const CurrencyStep: React.FC = () => {
       _url: ApiUrlEnum.uploadSingleFile,
       _contentType: zAxiosApiRequestContentType.FormData
     });
-  // #endregion
-
-  // #region Recoil
-  const setZUserRStateAtom = useSetRecoilState(ZUserRStateAtom);
   // #endregion
 
   // #region functions
@@ -163,15 +154,6 @@ const CurrencyStep: React.FC = () => {
         );
 
         if (_data !== null && _data !== undefined) {
-          // store User data.
-          void Storage.set(constants.localstorageKeys.userData, _data);
-
-          // Storing user data in user Recoil State.
-          setZUserRStateAtom((oldValues) => ({
-            ...oldValues,
-            ..._data
-          }));
-
           showSuccessNotification(messages.user.currencyDetails);
 
           void navigate({

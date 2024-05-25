@@ -1,12 +1,18 @@
 const _env = import.meta.env;
 
 // Backend url for apis
-const apiUrl = (_env.PROD ? _env.VITE_API_URL_PROD : _env.VITE_API_URL) ?? '';
-const backendUrl =
-  (_env.PROD ? _env.VITE_BACKEND_URL_PROD : _env.VITE_BACKEND_URL) ?? '';
 
 export const ENVS = {
-  apiUrl,
-  cryptoSecret: _env.VITE_CRYPTO_SECRET ?? 'invoice-app-secret',
-  backendUrl
+  cryptoSecret:
+    _env.VITE_CRYPTO_SECRET ??
+    'Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)',
+  firebase: {
+    apiKey: _env.VITE_FRB_API_KEY ?? '',
+    authDomain: _env.VITE_FRB_AUTH_DOMAIN ?? '',
+    projectId: _env.VITE_FRB_PROJECT_ID ?? '',
+    storageBucket: _env.VITE_FRB_STORAGE_BUCKET ?? '',
+    messagingSenderId: _env.VITE_FRB_MESSAGING_SENDER_ID ?? '',
+    appId: _env.VITE_FRB_APP_ID ?? '',
+    measurementId: _env.VITE_FRB_MEASUREMENT_ID ?? ''
+  }
 };

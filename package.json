@@ -1,21 +1,21 @@
 {
-  "name": "invoice-app-frontend",
+  "name": "oasis-hafiz-estate-and-developers-project",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
-  "description": "Invoice Generator App",
-  "displayName": "Invoice App",
+  "description": "Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)",
+  "displayName": "Oasis",
   "author": {
     "name": "Zaions",
     "email": "hello@zaions.com",
     "url": "https://zaions.com/bio"
   },
   "keywords": [
-    "Invoice",
+    "Oasis",
     "Zaions",
     "Aoneahsan",
     "Ahsan Mahmood",
-    "Best Invoice Generator App",
+    "Best Estate Project",
     "Website and Mobile App"
   ],
   "scripts": {
@@ -49,6 +49,7 @@
     "axios": "^1.7.2",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.11",
+    "firebase": "^10.12.1",
     "formik": "^2.4.6",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",

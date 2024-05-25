@@ -50,11 +50,6 @@ import {
 
 // #endregion
 
-// #region ---- Store Imports ----
-import { ZUserRStateAtom } from '@/Store/Auth/User';
-
-// #endregion
-
 // #region ---- Images Imports ----
 import { SpinSvg } from '@/assets';
 import { ZInvoiceTypeE } from '@/Types/Auth/Invoice';
@@ -83,10 +78,6 @@ const BankDetailsStep: React.FC = () => {
     });
   // #endregion
 
-  // #region Recoil
-  const setZUserRStateAtom = useSetRecoilState(ZUserRStateAtom);
-  // #endregion
-
   // #region custom hooks
   const navigate = useZNavigate();
   // #endregion
@@ -110,15 +101,6 @@ const BankDetailsStep: React.FC = () => {
         );
 
         if (_data !== null && _data !== undefined) {
-          // store User data.
-          void Storage.set(constants.localstorageKeys.userData, _data);
-
-          // Storing user data in user Recoil State.
-          setZUserRStateAtom((oldValues) => ({
-            ...oldValues,
-            ..._data
-          }));
-
           showSuccessNotification(messages.user.bankDetails);
 
           void navigate({

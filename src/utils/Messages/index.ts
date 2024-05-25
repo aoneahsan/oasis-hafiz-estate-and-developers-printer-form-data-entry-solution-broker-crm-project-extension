@@ -26,7 +26,10 @@ const auth = {
     messages: 'Are you sure you want to logout?'
   },
   logoutLoader: 'Logging out please wait a second...',
-  confirmNotMatch: 'Your confirmation input did not match.'
+  confirmNotMatch: 'Your confirmation input did not match.',
+  invalidAuthData: 'Invalid email or password.',
+  userNotFoundOrInvalidDetails: 'User not found or invalid details.',
+  registrationFailed: 'Registration failed, please try again.'
 } as const;
 
 const user = {

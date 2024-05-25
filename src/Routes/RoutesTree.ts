@@ -1,30 +1,12 @@
-import {
-  clientRoute,
-  clientFormRouteTree,
-  homeRoute,
-  invoiceRoute,
-  loginRoute,
-  onboardingRoutesTree,
-  profileSettingsRoutesTree,
-  registerRoute,
-  testingRoute,
-  invoiceFormRouteTree,
-  forgotRoute
-} from './AllRoutes';
+import { homeRoute, loginRoute, registerRoute } from './AllRoutes';
 import tanstackRootRoute from './RootRoute';
+import { oasisEntryForm } from './oasisRoutes';
 
 const routeTree = tanstackRootRoute.addChildren([
   homeRoute,
   registerRoute,
   loginRoute,
-  testingRoute,
-  onboardingRoutesTree,
-  profileSettingsRoutesTree,
-  clientRoute,
-  invoiceRoute,
-  clientFormRouteTree,
-  invoiceFormRouteTree,
-  forgotRoute
+  oasisEntryForm
 ]);
 
 export default routeTree;

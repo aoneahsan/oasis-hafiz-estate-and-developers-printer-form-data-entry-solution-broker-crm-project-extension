@@ -17,9 +17,7 @@ import { ZClassNames } from '@/Packages/ClassNames';
 
 // #region ---- Custom Imports ----
 import ZAuthNavigation from '@/Components/Auth/Navigation';
-import BackDetailsForm from '@/Components/Inpage/BankDetailsForm';
 import Copyright from '@/Components/Inpage/Copyright';
-import ProfileForm from '@/Components/Inpage/ProfileForm';
 import ZButton from '@/Components/Elements/Button';
 import {
   useZRQCreateRequest,
@@ -41,7 +39,6 @@ import {
 import { messages } from '@/utils/Messages';
 import { useZNavigate } from '@/ZHooks/Navigation.hook';
 import { AppRoutes } from '@/Routes/AppRoutes';
-import ZClientFormSkeleton from '@/Components/Skeleton/Form/clientFormSkeleton';
 
 // #endregion
 
@@ -74,10 +71,11 @@ import { zValidationRuleE } from '@/utils/Enums/index.enum';
 // #region ---- Types Imports ----
 import { SpinSvg, productVector } from '@/assets';
 import { constants } from '@/utils/Constants';
+import OasisEntryFormFields from '@/Components/oasis/OasisEntryFormFields';
 
 // #endregion
 
-const ClientForm: React.FC = () => {
+const OasisEntryFormAuthCheck: React.FC = () => {
   // When it's edit route that we will get clientId from route params
   let clientId = '';
   try {
@@ -336,7 +334,7 @@ const ClientForm: React.FC = () => {
 
         <div className='w-[64.4375rem] max-w-full mx-auto maxMd:mt-[1.6rem] md:mt-[2.4rem]'>
           <h2 className='uppercase maxLg:text-center text-primary md:me-9 text-[1.5rem] md:text-[2.25rem] font-black font-mont-heavy'>
-            {isZNonEmptyString(clientId) ? 'Update' : 'Add New'} Client
+            Add Client Details
           </h2>
           <ZFormik
             initialValues={formikInitialValues}
@@ -345,16 +343,61 @@ const ClientForm: React.FC = () => {
               const errors: { default_currency?: string } = {};
               validateFields(
                 [
-                  'address',
-                  'company',
-                  'city',
-                  'country',
-                  'zipcode',
-                  'default_currency'
+                  // Property selection
+                  'plotNumber', // 1
+                  'registrationNumber', // 2
+                  'serialNumber', // 3
+                  'plotType', // 4
+                  'plotSize', // 5
+                  'extraPercentageForLocationCategory', // 6
+                  'extraPercentageForLocationCategoryReason', // 7
+
+                  // Personal Information
+                  'applicantName', // 8
+                  'guardianName', // 9
+                  'relationWithGuardian', // 10
+                  'cnicNumber', // 11
+                  'passportNumber', // 12
+                  'mailAddress', // 13
+                  'permanentAddress', // 14
+                  'phoneNumber', // 15
+                  'mobileNumber', // 16
+
+                  // Nominee Information
+                  'nomineeName', // 17
+                  'nomineeGuardianName', // 18
+                  'nomineeRelationWithGuardian', // 19
+                  'nomineeCnicNumber', // 20
+                  'nomineeRelationWithApplicant', // 21
+                  'nomineeAddress', // 22
+                  'nomineePhoneNumber', // 23
+                  'nomineeMobileNumber', // 24
+
+                  // Payment Information
+                  'paymentMethod' // 25
                 ],
                 values,
                 errors,
                 [
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
+                  zValidationRuleE.string,
                   zValidationRuleE.string,
                   zValidationRuleE.string,
                   zValidationRuleE.string,
@@ -404,52 +447,46 @@ const ClientForm: React.FC = () => {
                   onSubmit={handleSubmit}
                   className='flex flex-col items-center w-full mt-5'
                 >
-                  {isZNonEmptyString(clientId) &&
-                  isSelectedClientDataFetching ? (
-                    <ZClientFormSkeleton />
-                  ) : (
-                    <>
-                      <ProfileForm />
-                      <BackDetailsForm className='mt-4' />
+                  <>
+                    <OasisEntryFormFields />
 
-                      <div className='flex pt-3 max-w-[23.438rem] w-full mt-10 maxSm:flex-col-reverse maxSm:gap-y-2 sm:items-center sm:justify-between'>
-                        <ZButton
-                          fill={ZFill.clear}
-                          className='uppercase'
-                          onClick={() => {
-                            void navigate({
-                              to: AppRoutes.authRoutes.client
-                            });
-                          }}
-                        >
-                          Cancel
-                        </ZButton>
-                        <ZButton
-                          type='submit'
-                          className={ZClassNames({
-                            'flex items-center justify-center uppercase': true,
-                            'cursor-not-allowed':
-                              isCreateClientPending ||
-                              isUpdateClientPending ||
-                              !dirty
-                          })}
-                          disabled={
-                            !isValid ||
+                    <div className='flex pt-3 max-w-[23.438rem] w-full mt-10 maxSm:flex-col-reverse maxSm:gap-y-2 sm:items-center sm:justify-between'>
+                      <ZButton
+                        fill={ZFill.clear}
+                        className='uppercase'
+                        onClick={() => {
+                          void navigate({
+                            to: AppRoutes.authRoutes.client
+                          });
+                        }}
+                      >
+                        Cancel
+                      </ZButton>
+                      <ZButton
+                        type='submit'
+                        className={ZClassNames({
+                          'flex items-center justify-center uppercase': true,
+                          'cursor-not-allowed':
                             isCreateClientPending ||
                             isUpdateClientPending ||
                             !dirty
-                          }
-                        >
-                          {isCreateClientPending || isUpdateClientPending ? (
-                            <SpinSvg className='me-2 text-secondary' />
-                          ) : (
-                            ''
-                          )}
-                          Save
-                        </ZButton>
-                      </div>
-                    </>
-                  )}
+                        })}
+                        disabled={
+                          !isValid ||
+                          isCreateClientPending ||
+                          isUpdateClientPending ||
+                          !dirty
+                        }
+                      >
+                        {isCreateClientPending || isUpdateClientPending ? (
+                          <SpinSvg className='me-2 text-secondary' />
+                        ) : (
+                          ''
+                        )}
+                        Save
+                      </ZButton>
+                    </div>
+                  </>
                 </ZFormikForm>
               );
             }}
@@ -471,4 +508,4 @@ const ClientForm: React.FC = () => {
   );
 };
 
-export default ClientForm;
+export default OasisEntryFormAuthCheck;

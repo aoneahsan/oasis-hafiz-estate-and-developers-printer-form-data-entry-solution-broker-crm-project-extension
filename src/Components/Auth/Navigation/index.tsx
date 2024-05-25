@@ -1,18 +1,10 @@
 // #region ---- Core Imports ----
-import React, { useMemo } from 'react';
-
-// #endregion
-
-// #region ---- Packages Imports ----
-import { useSetRecoilState } from 'recoil';
-import { useMatchRoute } from '@tanstack/react-router';
+import React from 'react';
 
 // #endregion
 
 // #region ---- Custom Imports ----
-import { ZClassNames } from '@/Packages/ClassNames';
 import ZButton from '@/Components/Elements/Button';
-import { useZNavigate } from '@/ZHooks/Navigation.hook';
 import {
   useZLoader,
   useZModal,
@@ -20,30 +12,17 @@ import {
 } from '@/ZHooks/ZGlobalComponents.hook';
 import { AppRoutes } from '@/Routes/AppRoutes';
 import { messages } from '@/utils/Messages';
-import { constants } from '@/utils/Constants';
-import { Storage, reportCustomError } from '@/utils/Helpers';
-import { useZRQCreateRequest } from '@/ZHooks/zreactquery.hooks';
-import { extractInnerData } from '@/utils/Helpers/APIS';
+import { reportCustomError } from '@/utils/Helpers';
 
 // #endregion
 
 // #region ---- Types Imports ----
 import { ZColorEnum, ZFill } from '@/utils/Enums/Elements.enum';
-import { ApiUrlEnum } from '@/utils/Enums/apis.enum';
-import { extractInnerDataOptionsEnum } from '@/Types/APIs/index.type';
-
-// #endregion
-
-// #region ---- Store Imports ----
-import { ZUserRStateAtom } from '@/Store/Auth/User';
-import { ZAuthTokenData } from '@/Store/Auth/index.recoil';
-
-// #endregion
 
 // #region ---- Images Imports ----
 import { CloseSvg, ExitSvg, MenuSvg, productLogo } from '@/assets';
-import { ZInvoiceTypeE } from '@/Types/Auth/Invoice';
 import { type ZGenericObject } from '@/Types/Global/index.type';
+import { frbSignOut } from '@/config/firebase';
 
 // #endregion
 
@@ -58,18 +37,6 @@ const LogoutModal: React.FC<{
   const { showLoader, hideLoader } = useZLoader();
   // #endregion
 
-  // #region APIs
-  const { mutateAsync: logoutAsyncMutate } = useZRQCreateRequest({
-    _url: ApiUrlEnum.logout
-  });
-  // #endregion
-
-  // #region Recoil
-  const setZUserRStateAtom = useSetRecoilState(ZUserRStateAtom);
-
-  const setZAuthTokenRStateAtom = useSetRecoilState(ZAuthTokenData);
-  // #endregion
-
   // #region Functions
   const logoutHandler = async (): Promise<void> => {
     try {
@@ -77,42 +44,13 @@ const LogoutModal: React.FC<{
       showLoader(messages.auth.logoutLoader);
 
       // api
-      const _response = await logoutAsyncMutate('');
+      await frbSignOut();
 
-      if (_response !== undefined && _response !== null) {
-        const _data = extractInnerData<{
-          isSuccess: boolean;
-        }>(_response, extractInnerDataOptionsEnum.createRequestResponseData);
+      // hiding loader.
+      hideLoader();
 
-        if (_data?.isSuccess === true) {
-          // Storing user data in user Recoil State.
-          setZUserRStateAtom(() => null);
-
-          // Storing token data in token Recoil State.
-          setZAuthTokenRStateAtom(() => null);
-
-          // Remove data from Storage.
-          await Promise.all([
-            Storage.remove(constants.localstorageKeys.userData),
-            Storage.remove(constants.localstorageKeys.authToken)
-          ]);
-
-          // If success then show the success notification.
-          // showSuccessNotification(messages.auth.loggedSuccess);
-
-          // hiding loader.
-          hideLoader();
-
-          // hiding modal.
-          // hideModal();
-
-          // Redirect to login.
-          window.location.href = AppRoutes.login;
-          // void navigate({
-          //   to: AppRoutes.login
-          // });
-        }
-      }
+      // Redirect to login.
+      window.location.href = AppRoutes.login;
     } catch (error) {
       // hiding loader.
       hideLoader();
@@ -167,44 +105,6 @@ const LogoutModal: React.FC<{
 const ZAuthNavigation: React.FC = () => {
   // #region Custom Hooks
   const { openSidebar } = useZSideBar(ZNavSidebarContent);
-  const navigate = useZNavigate();
-  const matchRoute = useMatchRoute();
-
-  //
-  const isCredentialsRoute = matchRoute({
-    to: AppRoutes.authRoutes.profileSettingSub.credentials.completePath
-  });
-
-  const isProfileDetailsRoute = matchRoute({
-    to: AppRoutes.authRoutes.profileSettingSub.profileDetails.completePath
-  });
-
-  const isCurrencyDetailsRoute = matchRoute({
-    to: AppRoutes.authRoutes.profileSettingSub.currencyDetails.completePath
-  });
-
-  const isBankDetailsRoute = matchRoute({
-    to: AppRoutes.authRoutes.profileSettingSub.bankDetails.completePath
-  });
-
-  const isInvoiceRoute = matchRoute({
-    to: AppRoutes.authRoutes.invoices,
-    params: {
-      invoiceType: ZInvoiceTypeE.inv
-    }
-  });
-  const isClientRoute = matchRoute({
-    to: AppRoutes.authRoutes.client,
-   
-  });
-
-  const isExpensesRoute = matchRoute({
-    to: AppRoutes.authRoutes.invoices,
-    params: {
-      invoiceType: ZInvoiceTypeE.exp
-    }
-  });
-  // #endregion
 
   // #region Modals
   const { showModal: showLogoutModal } = useZModal({
@@ -214,20 +114,6 @@ const ZAuthNavigation: React.FC = () => {
       'w-[31.25rem!important] h-[max-content!important] max-h-[23rem!important] maxSm:h-[23rem!important] overflow-y-auto min-h-[20rem!important]'
   });
   // #endregion
-
-  const isSettingsRoute = useMemo(() => {
-    return (
-      isProfileDetailsRoute === true ||
-      isCredentialsRoute === true ||
-      isBankDetailsRoute === true ||
-      isCurrencyDetailsRoute === true
-    );
-  }, [
-    isProfileDetailsRoute,
-    isCredentialsRoute,
-    isBankDetailsRoute,
-    isCurrencyDetailsRoute
-  ]);
 
   return (
     <div className='flex items-center w-full maxLg:justify-between maxSm:px-2 lg:pe-12 md:ps-14'>
@@ -242,53 +128,7 @@ const ZAuthNavigation: React.FC = () => {
       {/*  */}
       <div className='flex items-center justify-end xl:w-1/2 lg:w-8/12 xl:gap-[3.5rem] gap-[1.5rem]'>
         <div className='flex items-center maxMd:hidden justify-start gap-[.85rem]'>
-          <span
-            className={ZClassNames({
-              'z-profile-item': true
-            })}
-            onClick={() => {
-              if (isInvoiceRoute === false) {
-                void navigate({
-                  to: AppRoutes.authRoutes.invoices,
-                  params: {
-                    invoiceType: ZInvoiceTypeE.inv
-                  }
-                });
-              }
-            }}
-          >
-            Invoice
-          </span>
-          <span
-            className={ZClassNames({
-              'z-profile-item': true
-            })}
-            onClick={() => {
-              if (isExpensesRoute === false) {
-                void navigate({
-                  to: AppRoutes.authRoutes.invoices,
-                  params: {
-                    invoiceType: ZInvoiceTypeE.exp
-                  }
-                });
-              }
-            }}
-          >
-            Expenses
-          </span>
-          <span
-            className={ZClassNames({
-              'z-profile-item': true
-            })}
-            onClick={() => {
-              if (isClientRoute === false) {
-                void navigate({ to: AppRoutes.authRoutes.client });
-              }
-            }}
-          >
-            Clients
-          </span>
-          <span
+          {/* <span
             className={ZClassNames({
               'z-profile-item': true
             })}
@@ -302,23 +142,13 @@ const ZAuthNavigation: React.FC = () => {
             }}
           >
             Settings
-          </span>
+          </span> */}
         </div>
 
         <span className='maxMd:hidden'>
           <ExitSvg
             className='w-[3rem] h-[3rem] cursor-pointer text-primary'
             onClick={() => {
-              // void (async () => {
-              //   const { value } = await showZConfirm({
-              //     title: messages.auth.logoutConfirmDialog.title,
-              //     message: messages.auth.logoutConfirmDialog.messages
-              //   });
-
-              //   if (value) {
-              //     await logoutHandler();
-              //   }
-              // })();
               showLogoutModal();
             }}
           />
@@ -357,33 +187,12 @@ const ZNavSidebarContent: React.FC<{ closeSidebar: () => void }> = ({
         </div>
 
         <div className='w-full mt-10'>
-          <ZButton
-            className='w-full uppercase text-[.8rem]'
-            fill={ZFill.outline}
-          >
-            Invoice
-          </ZButton>
-
-          <ZButton
-            className='w-full mt-3 uppercase text-[.8rem]'
-            fill={ZFill.outline}
-          >
-            Expenses
-          </ZButton>
-
-          <ZButton
-            className='w-full mt-3 uppercase text-[.8rem]'
-            fill={ZFill.outline}
-          >
-            Clients
-          </ZButton>
-
-          <ZButton
+          {/* <ZButton
             className='w-full mt-3 uppercase text-[.8rem]'
             fill={ZFill.outline}
           >
             Settings
-          </ZButton>
+          </ZButton> */}
         </div>
       </div>
 

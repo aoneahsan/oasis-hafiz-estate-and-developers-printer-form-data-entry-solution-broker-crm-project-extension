@@ -83,7 +83,10 @@ const AppRoutesE = {
     }
   },
 
-  Testing: '/testing'
+  Testing: '/testing',
+  oasis: {
+    entryForm: '/zaions/oasis/entry-form'
+  }
 } as const;
 
 // export const getFullPage

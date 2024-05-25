@@ -56,12 +56,6 @@ import { ZInvoiceTypeE } from '@/Types/Auth/Invoice';
 
 // #endregion
 
-// #region ---- Store Imports ----
-import { ZUserRStateAtom } from '@/Store/Auth/User';
-import { ZAuthTokenData } from '@/Store/Auth/index.recoil';
-
-// #endregion
-
 // #region ---- Images Imports ----
 import { SpinSvg, productLogo, productVector } from '@/assets';
 import dayjs from 'dayjs';
@@ -124,12 +118,6 @@ const ForgotPassword: React.FC = () => {
     _url: ApiUrlEnum.resetPassword,
     _authenticated: false
   });
-  // #endregion
-
-  // #region Recoil
-  const setZUserRStateAtom = useSetRecoilState(ZUserRStateAtom);
-
-  const setZAuthTokenRStateAtom = useSetRecoilState(ZAuthTokenData);
   // #endregion
 
   // #region Function
@@ -297,24 +285,6 @@ const ForgotPassword: React.FC = () => {
 
         if (_data?.success) {
           await Storage.remove(constants.localstorageKeys.resetPassword);
-
-          // store User data.
-          void Storage.set(constants.localstorageKeys.userData, _data?.user);
-
-          // store auth token.
-          void Storage.set(constants.localstorageKeys.authToken, _data?.token);
-
-          // Storing user data in user Recoil State.
-          setZUserRStateAtom((oldValues) => ({
-            ...oldValues,
-            ..._data?.user
-          }));
-
-          // Storing token data in token Recoil State.
-          setZAuthTokenRStateAtom((oldValues) => ({
-            ...oldValues,
-            token: _data?.token
-          }));
 
           showSuccessNotification(messages.auth.resetPasswordSuccess);
 

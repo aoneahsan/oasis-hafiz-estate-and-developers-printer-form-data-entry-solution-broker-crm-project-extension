@@ -27,7 +27,6 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRecoilValue } from 'recoil';
-import { ZUserRStateAtom } from '@/Store/Auth/User';
 
 /**
  * The custom hook for getting data from an API using useQuery hook from react-query package.
@@ -77,9 +76,8 @@ export const useZRQGetRequest = <T>({
     | UseQueryOptions<T | null | undefined>['placeholderData']
     | null;
 }): UseQueryResult<T | null | undefined, Error> => {
-  const ZUserRState = useRecoilValue(ZUserRStateAtom);
   const _response = useQuery({
-    queryKey: [ZUserRState?.id, ..._key],
+    queryKey: [..._key],
     queryFn: async (): Promise<T | undefined | null> => {
       if (_shouldFetchWhenIdPassed !== null && _shouldFetchWhenIdPassed) {
         return null;
@@ -539,7 +537,6 @@ export const useZUpdateRQCacheData = (): {
     updaterAction?: ZRQUpdaterAction;
   }) => unknown;
 } => {
-  const ZUserRState = useRecoilValue(ZUserRStateAtom);
   try {
     const queryClient = useQueryClient();
 
@@ -558,117 +555,105 @@ export const useZUpdateRQCacheData = (): {
       updaterAction?: ZRQUpdaterAction;
     }): unknown => {
       if (updaterAction === ZRQUpdaterAction.updateHole) {
-        queryClient.setQueryData(
-          [ZUserRState?.id, ...key],
-          (oldData: unknown) => {
-            const updatedData = structuredClone(oldData);
-            switch (extractType) {
-              case ZRQGetRequestExtractEnum.extractItem:
-                (updatedData as { data: { item: T } }).data.item = data as T;
-                break;
+        queryClient.setQueryData([...key], (oldData: unknown) => {
+          const updatedData = structuredClone(oldData);
+          switch (extractType) {
+            case ZRQGetRequestExtractEnum.extractItem:
+              (updatedData as { data: { item: T } }).data.item = data as T;
+              break;
 
-              case ZRQGetRequestExtractEnum.extractItems:
-                (updatedData as { data: { items: T } }).data.items = data as T;
-                break;
-            }
-
-            return updatedData;
+            case ZRQGetRequestExtractEnum.extractItems:
+              (updatedData as { data: { items: T } }).data.items = data as T;
+              break;
           }
-        );
+
+          return updatedData;
+        });
       } else if (updaterAction === ZRQUpdaterAction.replace) {
-        const _res = queryClient.setQueryData(
-          [ZUserRState?.id, ...key],
-          (oldData: unknown) => {
-            if (oldData !== undefined) {
-              if (Array.isArray(oldData)) {
-                const updatedData = [...oldData];
-                const index = updatedData.findIndex((el) => el.id === id);
-                if (index !== -1) {
-                  updatedData[index] = data;
-                }
-                return updatedData;
-              } else if (typeof oldData === 'object') {
-                const updatedData = structuredClone(oldData);
-                const actualDataItems = (
-                  updatedData as { data: { items: unknown[] } }
-                )?.data?.items;
-                if (
-                  actualDataItems !== undefined &&
-                  Array.isArray(actualDataItems) &&
-                  actualDataItems.length > 0
-                ) {
-                  const updatedDataItems = [...actualDataItems];
-                  const index = updatedDataItems.findIndex(
-                    (el: unknown) => (el as { id: string })?.id === id
-                  );
-                  if (index !== -1) {
-                    updatedDataItems[index] = data;
-                  }
-                  (updatedData as { data: { items: unknown[] } }).data.items =
-                    updatedDataItems;
-                }
-                return updatedData;
-              }
-            }
-            return oldData;
-          }
-        );
-
-        return _res;
-      } else if (updaterAction === ZRQUpdaterAction.add) {
-        const _res = queryClient.setQueryData(
-          [ZUserRState?.id, ...key],
-          (oldData: unknown) => {
+        const _res = queryClient.setQueryData([...key], (oldData: unknown) => {
+          if (oldData !== undefined) {
             if (Array.isArray(oldData)) {
-              const updatedData = [...(oldData ?? []), data];
+              const updatedData = [...oldData];
+              const index = updatedData.findIndex((el) => el.id === id);
+              if (index !== -1) {
+                updatedData[index] = data;
+              }
               return updatedData;
             } else if (typeof oldData === 'object') {
               const updatedData = structuredClone(oldData);
               const actualDataItems = (
                 updatedData as { data: { items: unknown[] } }
               )?.data?.items;
-
-              const updatedDataItems = [...(actualDataItems ?? []), data];
-              (updatedData as { data: { items: unknown[] } }).data.items =
-                updatedDataItems;
-
+              if (
+                actualDataItems !== undefined &&
+                Array.isArray(actualDataItems) &&
+                actualDataItems.length > 0
+              ) {
+                const updatedDataItems = [...actualDataItems];
+                const index = updatedDataItems.findIndex(
+                  (el: unknown) => (el as { id: string })?.id === id
+                );
+                if (index !== -1) {
+                  updatedDataItems[index] = data;
+                }
+                (updatedData as { data: { items: unknown[] } }).data.items =
+                  updatedDataItems;
+              }
               return updatedData;
             }
-            return oldData;
           }
-        );
+          return oldData;
+        });
+
+        return _res;
+      } else if (updaterAction === ZRQUpdaterAction.add) {
+        const _res = queryClient.setQueryData([...key], (oldData: unknown) => {
+          if (Array.isArray(oldData)) {
+            const updatedData = [...(oldData ?? []), data];
+            return updatedData;
+          } else if (typeof oldData === 'object') {
+            const updatedData = structuredClone(oldData);
+            const actualDataItems = (
+              updatedData as { data: { items: unknown[] } }
+            )?.data?.items;
+
+            const updatedDataItems = [...(actualDataItems ?? []), data];
+            (updatedData as { data: { items: unknown[] } }).data.items =
+              updatedDataItems;
+
+            return updatedData;
+          }
+          return oldData;
+        });
 
         return _res;
       } else if (updaterAction === ZRQUpdaterAction.delete) {
-        const _res = queryClient.setQueryData(
-          [ZUserRState?.id, ...key],
-          (oldData: unknown) => {
-            if (oldData !== undefined) {
-              if (Array.isArray(oldData)) {
-                const updatedData = oldData.filter((el) => el.id !== id);
-                return updatedData;
-              } else if (typeof oldData === 'object') {
-                const updatedData = structuredClone(oldData);
-                const actualDataItems = (
-                  updatedData as { data: { items: unknown[] } }
-                )?.data?.items;
-                if (
-                  actualDataItems !== undefined &&
-                  Array.isArray(actualDataItems) &&
-                  actualDataItems.length > 0
-                ) {
-                  const updatedDataItems = actualDataItems.filter(
-                    (el) => (el as { id?: string })?.id !== id
-                  );
-                  (updatedData as { data: { items: unknown[] } }).data.items =
-                    updatedDataItems;
-                }
-                return updatedData;
+        const _res = queryClient.setQueryData([...key], (oldData: unknown) => {
+          if (oldData !== undefined) {
+            if (Array.isArray(oldData)) {
+              const updatedData = oldData.filter((el) => el.id !== id);
+              return updatedData;
+            } else if (typeof oldData === 'object') {
+              const updatedData = structuredClone(oldData);
+              const actualDataItems = (
+                updatedData as { data: { items: unknown[] } }
+              )?.data?.items;
+              if (
+                actualDataItems !== undefined &&
+                Array.isArray(actualDataItems) &&
+                actualDataItems.length > 0
+              ) {
+                const updatedDataItems = actualDataItems.filter(
+                  (el) => (el as { id?: string })?.id !== id
+                );
+                (updatedData as { data: { items: unknown[] } }).data.items =
+                  updatedDataItems;
               }
+              return updatedData;
             }
-            return oldData;
           }
-        );
+          return oldData;
+        });
 
         return _res;
       } else {
@@ -699,7 +684,6 @@ export const useZInvalidateReactQueries = ():
       zInvalidateReactQueries: () => void;
     } => {
   const queryClient = useQueryClient();
-  const ZUserRState = useRecoilValue(ZUserRStateAtom);
   try {
     /**
      * Function to invalidate React Query cache for specific queries.
@@ -710,7 +694,7 @@ export const useZInvalidateReactQueries = ():
       _queriesKeysToInvalidate?: string[]
     ): Promise<void> => {
       await queryClient.invalidateQueries({
-        queryKey: [ZUserRState?.id, ...(_queriesKeysToInvalidate ?? [])]
+        queryKey: [...(_queriesKeysToInvalidate ?? [])]
       });
     };
 

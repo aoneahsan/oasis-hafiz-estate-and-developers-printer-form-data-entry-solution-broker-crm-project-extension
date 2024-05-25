@@ -1,66 +1,52 @@
 // #region ---- Core Imports ----
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 // #endregion
 
 // #region ---- Packages Imports ----
-import { useSetRecoilState } from 'recoil';
 import { ZClassNames } from '@/Packages/ClassNames';
-import { AxiosError } from 'axios';
 
 // #endregion
 
 // #region ---- Custom Imports ----
 import ZInput from '@/Components/Elements/Input';
 import Copyright from '@/Components/Inpage/Copyright';
+import { ZFormik, ZFormikForm } from '@/Packages/Formik';
 import {
-  ZFormik,
-  ZFormikForm,
-  type zSetFieldErrorType,
-  type zSetFieldValueType
-} from '@/Packages/Formik';
-import {
-  Storage,
   isZNonEmptyString,
   reportCustomError,
-  validateFields,
-  zStringify
+  validateFields
 } from '@/utils/Helpers';
 import ZButton from '@/Components/Elements/Button';
 import { useZNavigate } from '@/ZHooks/Navigation.hook';
-import { useZRQCreateRequest } from '@/ZHooks/zreactquery.hooks';
-import { extractInnerData } from '@/utils/Helpers/APIS';
-import { constants } from '@/utils/Constants';
-import { showSuccessNotification } from '@/utils/Helpers/Notification';
+import {
+  showErrorNotification,
+  showSuccessNotification
+} from '@/utils/Helpers/Notification';
 import { messages } from '@/utils/Messages';
 
 // #endregion
 
 // #region ---- Types Imports ----
 import { ZFill } from '@/utils/Enums/Elements.enum';
-import { type ZAuthI } from '@/Types/Auth/index.type';
 import { AppRoutes } from '@/Routes/AppRoutes';
 import { zValidationRuleE } from '@/utils/Enums/index.enum';
-import { ApiUrlEnum } from '@/utils/Enums/apis.enum';
-import {
-  extractInnerDataObjectEnum,
-  extractInnerDataOptionsEnum
-} from '@/Types/APIs/index.type';
-
-// #endregion
-
-// #region ---- Store Imports ----
-import { ZUserRStateAtom } from '@/Store/Auth/User';
-import { ZAuthTokenData } from '@/Store/Auth/index.recoil';
 
 // #endregion
 
 // #region ---- Images Imports ----
 import { SpinSvg, productLogo, productVector } from '@/assets';
+import { frbCreateUserWithEmailAndPassword } from '@/config/firebase';
 
 // #endregion
 
 const Register: React.FC = () => {
+  const [compState, setCompState] = useState<{
+    isProcessing: boolean;
+  }>({
+    isProcessing: false
+  });
+
   const formikInitialValues = useMemo(
     () => ({
       name: '',
@@ -78,90 +64,41 @@ const Register: React.FC = () => {
   const navigate = useZNavigate();
   // #endregion
 
-  // #region APIs
-  const { mutateAsync: RegisterMutateAsync, isPending: isRegisterPending } =
-    useZRQCreateRequest({
-      _url: ApiUrlEnum.register,
-      _authenticated: false
-    });
-
-  // #endregion
-
-  // #region Recoil
-  const setZUserRStateAtom = useSetRecoilState(ZUserRStateAtom);
-
-  const setZAuthTokenRStateAtom = useSetRecoilState(ZAuthTokenData);
-  // #endregion
-
   // #region Functions
   const registerHandler = async (
-    value: string,
-    setFieldError: zSetFieldErrorType,
-    setFieldValue: zSetFieldValueType
+    email: string,
+    password: string
   ): Promise<void> => {
+    if (!isZNonEmptyString(email) || !isZNonEmptyString(password)) {
+      showErrorNotification(messages.auth.invalidAuthData);
+      return;
+    }
+    setCompState((oldValues) => ({
+      ...oldValues,
+      isProcessing: true
+    }));
+
     try {
-      const _response = await RegisterMutateAsync(value);
+      const _response = await frbCreateUserWithEmailAndPassword(
+        email,
+        password
+      );
 
       if (_response !== undefined && _response !== null) {
-        const _data = extractInnerData<{
-          user: ZAuthI;
-          token: string;
-        }>(_response, extractInnerDataOptionsEnum.createRequestResponseData);
+        showSuccessNotification(messages.auth.registerSuccess);
 
-        if (_data !== null && _data !== undefined) {
-          // store User data.
-          void Storage.set(constants.localstorageKeys.userData, _data?.user);
-
-          // store auth token.
-          void Storage.set(constants.localstorageKeys.authToken, _data?.token);
-
-          // Storing user data in user Recoil State.
-          setZUserRStateAtom((oldValues) => ({
-            ...oldValues,
-            ..._data?.user
-          }));
-
-          // Storing token data in token Recoil State.
-          setZAuthTokenRStateAtom((oldValues) => ({
-            ...oldValues,
-            token: _data?.token
-          }));
-
-          showSuccessNotification(messages.auth.registerSuccess);
-
-          void navigate({
-            to: AppRoutes.onBoardingSub.profileDetailsStep.completePath
-          });
-        }
+        void navigate({
+          to: AppRoutes.oasis.entryForm
+        });
       }
     } catch (error) {
       reportCustomError(error);
-      if (error instanceof AxiosError) {
-        const _data = extractInnerData<{
-          email: string[];
-          password: string[];
-          name: string[];
-        }>(
-          error?.response?.data,
-          extractInnerDataOptionsEnum.createRequestResponseData,
-          extractInnerDataObjectEnum.error
-        );
-        if (Array.isArray(_data?.email) && isZNonEmptyString(_data?.email[0])) {
-          void setFieldValue('isApiError', true, false);
-          setFieldError('email', _data?.email[0]);
-        }
-
-        if (
-          Array.isArray(_data?.password) &&
-          isZNonEmptyString(_data?.password[0])
-        ) {
-          setFieldError('password', _data?.password[0]);
-        }
-
-        if (Array.isArray(_data?.name) && isZNonEmptyString(_data?.name[0])) {
-          setFieldError('name', _data?.name[0]);
-        }
-      }
+      showErrorNotification(messages.auth.registrationFailed);
+    } finally {
+      setCompState((oldValues) => ({
+        ...oldValues,
+        isProcessing: false
+      }));
     }
   };
 
@@ -176,10 +113,10 @@ const Register: React.FC = () => {
 
   //
   return (
-    <div className='relative flex flex-col items-center justify-between w-full min-h-screen pt-10 bg-secondary h max-h-max pe-8'>
+    <div className='relative flex flex-col items-center justify-between w-full min-h-screen pt-0 bg-secondary h max-h-max pe-8'>
       <div className='flex flex-col items-center w-[25.5625rem] max-w-full h-full mt-6'>
         <img
-          className='w-[4.8rem] cursor-pointer h-[4.8rem] maxSm:mx-auto relative'
+          className='w-[12rem] cursor-pointer maxSm:mx-auto relative'
           alt='Logo'
           src={productLogo}
           onClick={() => {
@@ -220,25 +157,18 @@ const Register: React.FC = () => {
             validate={(values) => {
               const errors = {};
 
-              validateFields(['email', 'name', 'password'], values, errors, [
+              validateFields(['email', 'password'], values, errors, [
                 zValidationRuleE.email,
-                zValidationRuleE.string,
                 zValidationRuleE.password
               ]);
 
               return errors;
             }}
-            onSubmit={(values, { setFieldError, setFieldValue }) => {
-              const zStringifyData = zStringify({
-                email: values?.email,
-                name: values?.name,
-                password: values?.password
-              });
-              void registerHandler(
-                zStringifyData,
-                setFieldError,
-                setFieldValue
-              );
+            onSubmit={(values) => {
+              const email = values?.email ?? '';
+              const password = values?.password ?? '';
+
+              void registerHandler(email, password);
             }}
           >
             {({
@@ -256,7 +186,7 @@ const Register: React.FC = () => {
                   {/* Form */}
                   <div className='mt-6'>
                     {/* Name filed */}
-                    <ZInput
+                    {/* <ZInput
                       label='Your name*'
                       name='name'
                       value={values?.name}
@@ -274,7 +204,7 @@ const Register: React.FC = () => {
                       onBlur={(e) => {
                         handleBlur(e);
                       }}
-                    />
+                    /> */}
 
                     {/* Email filed */}
                     <ZInput
@@ -349,13 +279,14 @@ const Register: React.FC = () => {
                       }}
                       className={ZClassNames({
                         'flex items-center justify-center uppercase': true,
-                        'cursor-not-allowed': isRegisterPending
+                        'cursor-not-allowed': compState.isProcessing
                       })}
                       disabled={
-                        (!isValid && !values?.isApiError) || isRegisterPending
+                        (!isValid && !values?.isApiError) ||
+                        compState.isProcessing
                       }
                     >
-                      {isRegisterPending ? (
+                      {compState.isProcessing ? (
                         <SpinSvg className='me-2 text-secondary' />
                       ) : (
                         ''

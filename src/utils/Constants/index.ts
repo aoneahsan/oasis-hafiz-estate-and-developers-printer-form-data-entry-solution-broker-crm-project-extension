@@ -2,15 +2,14 @@
  * External Url's and other
  */
 const externalSites = {
-  mailto: 'support@nyuk.in',
-  PUR: 'https://forms.gle/byyRBGhR8PEARbn26' // Participate in user research
+  mailto: 'aoneahsan@gmail.com'
 } as const;
 
 /**
  * Product Information
  */
 const productInfo = {
-  name: 'Nyuk.in',
+  name: 'Oasis',
   domain: 'zaions.com'
 } as const;
 

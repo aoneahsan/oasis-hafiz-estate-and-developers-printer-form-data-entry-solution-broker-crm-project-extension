@@ -33,16 +33,7 @@ const Copyright: React.FC<{ className?: string }> = ({ className }) => {
           true
       })}
     >
-      Copyright {constants.productInfo.name} |
-      <a
-        href={constants.externalSites.PUR}
-        target='_blank'
-        rel='noreferrer'
-        className='px-1'
-      >
-        Participate in user research
-      </a>
-      |
+      Copyright {constants.productInfo.name} - Hafiz Estate & Developers |
       <a
         href={`mailto:${constants.externalSites.mailto}`}
         target='_blank'

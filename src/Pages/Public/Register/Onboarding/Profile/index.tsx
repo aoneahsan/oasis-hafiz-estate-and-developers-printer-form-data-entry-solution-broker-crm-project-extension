@@ -42,7 +42,6 @@ import {
 import { type ZAuthI } from '@/Types/Auth/index.type';
 import { constants } from '@/utils/Constants';
 import { useSetRecoilState } from 'recoil';
-import { ZUserRStateAtom } from '@/Store/Auth/User';
 import {
   showErrorNotification,
   showSuccessNotification
@@ -96,10 +95,6 @@ const OnBoardingProfile: React.FC = () => {
   });
   // #endregion
 
-  // #region Recoil
-  const setZUserRStateAtom = useSetRecoilState(ZUserRStateAtom);
-  // #endregion
-
   // #region functions
   const formikSubmitHandler = async (
     value: string,
@@ -119,15 +114,6 @@ const OnBoardingProfile: React.FC = () => {
         );
 
         if (_data !== null && _data !== undefined) {
-          // store User data.
-          void Storage.set(constants.localstorageKeys.userData, _data);
-
-          // Storing user data in user Recoil State.
-          setZUserRStateAtom((oldValues) => ({
-            ...oldValues,
-            ..._data
-          }));
-
           showSuccessNotification(messages.user.profileDetails);
 
           void navigate({
