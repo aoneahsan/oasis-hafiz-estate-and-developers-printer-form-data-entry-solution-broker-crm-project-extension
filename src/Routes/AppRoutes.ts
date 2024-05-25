@@ -1,5 +1,3 @@
-const authUrlCommonPath = '/app';
-
 const routeParams = {
   oasisEntryQrCode: 'oasisEntryQrCode'
 } as const;
@@ -12,7 +10,7 @@ const AppRoutesE = {
 
   oasis: {
     entryForm: '/zaions/oasis/entry-form',
-    viewEntryData: `/hafiz-estate-developers/opqr/:${routeParams.oasisEntryQrCode}`
+    viewEntryData: `/hafiz-estate-developers/opqr/$${routeParams.oasisEntryQrCode}`
   }
 } as const;
 

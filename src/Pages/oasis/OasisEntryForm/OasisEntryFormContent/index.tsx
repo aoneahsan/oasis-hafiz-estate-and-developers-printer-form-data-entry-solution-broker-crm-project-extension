@@ -50,14 +50,14 @@ const OasisEntryFormContent: React.FC = () => {
       });
 
       showSuccessNotification(
-        'Oasis Entry Form has been submitted successfully'
+        'The Oasis Entry Form has been submitted successfully'
       );
 
       callBack();
     } catch (error) {
       reportCustomError(error);
 
-      showErrorNotification('Failed to submit Oasis Entry Form');
+      showErrorNotification('Failed to submit The Oasis Entry Form');
     } finally {
       setCompState({ ...compState, processing: false });
     }
@@ -72,7 +72,7 @@ const OasisEntryFormContent: React.FC = () => {
         <ZAuthNavigation />
 
         <div className='w-[64.4375rem] max-w-full mx-auto maxMd:mt-[1.6rem] md:mt-[2.4rem]'>
-          <h2 className='uppercase maxLg:text-center text-primary md:me-9 text-[1.5rem] md:text-[2.25rem] font-black font-mont-heavy'>
+          <h2 className='uppercase text-center text-primary md:me-9 text-[1.5rem] md:text-[2.25rem] font-black font-mont-heavy'>
             Add Client Details
           </h2>
           <ZFormik
@@ -114,11 +114,13 @@ const OasisEntryFormContent: React.FC = () => {
             }}
             enableReinitialize={true}
             validate={(values) => {
-              const errors: { qrCodeNumber?: string } = {};
+              const errors: {
+                qrCodeNumber?: string;
+                extraPercentageForLocationCategoryReason?: string;
+              } = {};
+
               validateFields(
                 [
-                  'qrCodeNumber',
-
                   // Property selection
                   'plotNumber', // 1
                   'registrationNumber', // 2
@@ -126,61 +128,61 @@ const OasisEntryFormContent: React.FC = () => {
                   'plotType', // 4
                   'plotSize', // 5
                   'extraPercentageForLocationCategory', // 6
-                  'extraPercentageForLocationCategoryReason', // 7
 
                   // Personal Information
-                  'applicantName', // 8
-                  'guardianName', // 9
-                  'relationWithGuardian', // 10
-                  'cnicNumber', // 11
-                  'passportNumber', // 12
-                  'mailAddress', // 13
-                  'permanentAddress', // 14
-                  'phoneNumber', // 15
-                  'mobileNumber', // 16
+                  'applicantName', // 7
+                  'guardianName', // 8
+                  'relationWithGuardian', // 9
+                  'cnicNumber', // 10
+                  'passportNumber', // 11
+                  'mailAddress', // 12
+                  'permanentAddress', // 13
+                  'phoneNumber', // 14
+                  'mobileNumber', // 15
 
                   // Nominee Information
-                  'nomineeName', // 17
-                  'nomineeGuardianName', // 18
-                  'nomineeRelationWithGuardian', // 19
-                  'nomineeCnicNumber', // 20
-                  'nomineeRelationWithApplicant', // 21
-                  'nomineeAddress', // 22
-                  'nomineePhoneNumber', // 23
-                  'nomineeMobileNumber', // 24
+                  'nomineeName', // 16
+                  'nomineeGuardianName', // 17
+                  'nomineeRelationWithGuardian', // 18
+                  'nomineeCnicNumber', // 19
+                  'nomineeRelationWithApplicant', // 20
+                  'nomineeAddress', // 21
+                  'nomineePhoneNumber', // 22
+                  'nomineeMobileNumber', // 23
 
                   // Payment Information
-                  'paymentMethod' // 25
+                  'paymentMethod', // 24
+
+                  'qrCodeNumber' // 25
                 ],
                 values,
                 errors,
                 [
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string,
-                  zValidationRuleE.string
+                  zValidationRuleE.string, // 1
+                  zValidationRuleE.string, // 2
+                  zValidationRuleE.string, // 3
+                  zValidationRuleE.string, // 4
+                  zValidationRuleE.string, // 5
+                  zValidationRuleE.string, // 6
+                  zValidationRuleE.string, // 7
+                  zValidationRuleE.string, // 8
+                  zValidationRuleE.string, // 9
+                  zValidationRuleE.string, // 10
+                  zValidationRuleE.string, // 11
+                  zValidationRuleE.string, // 12
+                  zValidationRuleE.string, // 13
+                  zValidationRuleE.string, // 14
+                  zValidationRuleE.string, // 15
+                  zValidationRuleE.string, // 16
+                  zValidationRuleE.string, // 17
+                  zValidationRuleE.string, // 18
+                  zValidationRuleE.string, // 19
+                  zValidationRuleE.string, // 20
+                  zValidationRuleE.string, // 21
+                  zValidationRuleE.string, // 22
+                  zValidationRuleE.string, // 23
+                  zValidationRuleE.string, // 24
+                  zValidationRuleE.string // 25
                 ]
               );
 
@@ -189,6 +191,16 @@ const OasisEntryFormContent: React.FC = () => {
                 if (_qrCodeNumber < 1 || _qrCodeNumber > 5000) {
                   errors.qrCodeNumber =
                     'QR Code Number should be between 1-5000';
+                }
+              } catch (error) {}
+
+              try {
+                if (
+                  values.extraPercentageForLocationCategory &&
+                  !values.extraPercentageForLocationCategoryReason
+                ) {
+                  errors.extraPercentageForLocationCategoryReason =
+                    'Please specify a reason for 10% Extra Percentage.';
                 }
               } catch (error) {}
 

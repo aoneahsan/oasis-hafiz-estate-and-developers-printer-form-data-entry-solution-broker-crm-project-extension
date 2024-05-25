@@ -1,6 +1,6 @@
 GENERATE_SOURCEMAP=false
-VITE_TITLE="Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)"
-VITE_CRYPTO_SECRET='Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)'
+VITE_TITLE="The Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)"
+VITE_CRYPTO_SECRET='The Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)'
 
 # Firebase Keys
 VITE_FRB_API_KEY=""

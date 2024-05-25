@@ -36,7 +36,7 @@ import ZLockSvg from './svgs/Lock.svg';
 import flowLottie from './lotties/flow.json';
 import paymentAnimationLottie from './lotties/paymentAnimation.json';
 
-// Oasis Project Exports
+// The Oasis Project Exports
 import OasisLogo from './images/oasis/oasis.png';
 import HafizEstateLogo from './images/oasis/hafiz-estate.png';
 
@@ -82,7 +82,7 @@ export {
   Z404Svg,
   ZLockSvg,
 
-  // Oasis Project
+  // The Oasis Project
   OasisLogo,
   HafizEstateLogo
 };

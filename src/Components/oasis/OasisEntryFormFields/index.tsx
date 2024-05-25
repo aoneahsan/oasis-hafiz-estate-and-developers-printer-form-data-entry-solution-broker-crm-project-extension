@@ -18,6 +18,7 @@ import { isZNonEmptyString } from '@/utils/Helpers';
 // #region ---- Store Imports ----
 import ZTextarea from '@/Components/Elements/Textarea';
 import { IZOasisEntryForm } from '@/Types/oasis';
+import ZCheckbox from '@/Components/Elements/Checkbox';
 
 // #endregion
 
@@ -36,6 +37,33 @@ interface OasisEntryFormFieldsI {
 const paymentMethodsOptions = [
   { label: 'Bank Al Habib', value: 'bankAlHabib' },
   { label: 'Faysal Bank', value: 'faysalBank' }
+];
+
+const oasisPlotTypeOptions = [
+  { label: 'Residential Plot', value: 'residential' },
+  { label: 'Commercial Plot', value: 'commercial' }
+];
+
+const oasisPlotSizeOptions = [
+  { label: '3 Marla', value: '3' },
+  { label: '5 Marla', value: '5' },
+  { label: '10 Marla', value: '10' }
+];
+
+const guardianOptions = [
+  { label: 'Father', value: 'father' },
+  { label: 'Mother', value: 'mother' },
+  { label: 'Brother', value: 'brother' },
+  { label: 'Sister', value: 'sister' },
+  { label: 'Husband', value: 'husband' },
+  { label: 'Wife', value: 'wife' },
+  { label: 'Son', value: 'son' },
+  { label: 'Daughter', value: 'daughter' },
+  { label: 'Uncle', value: 'uncle' },
+  { label: 'Aunt', value: 'aunt' },
+  { label: 'Grandfather', value: 'grandfather' },
+  { label: 'Grandmother', value: 'grandmother' },
+  { label: 'Other', value: 'other' }
 ];
 
 const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
@@ -60,14 +88,13 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
     // eslint-disable-next-line
     []
   );
-
   return (
     <div
       style={containerStyle}
       className='maxSm:w-[100%!important] maxSm:max-w-[100%!important]'
     >
       <ZInput
-        label='Oasis QR Code Number*'
+        label='The Oasis QR Code Number*'
         name='qrCodeNumber'
         value={values?.qrCodeNumber}
         touched={touched?.qrCodeNumber}
@@ -85,6 +112,10 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
           handleBlur(e);
         }}
       />
+
+      <h4 className='uppercase text-primary md:me-9 text-[1.5rem] font-black font-mont-heavy text-center mt-10'>
+        Property Selection
+      </h4>
 
       <ZInput
         label='Plot Number*'
@@ -147,11 +178,12 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         }}
       />
 
-      <ZInput
+      <ZSelect
         label='Plot Type*'
         name='plotType'
-        value={values?.plotType}
-        touched={touched?.plotType}
+        value={oasisPlotTypeOptions.find(
+          (item) => item.value === values?.plotType
+        )}
         isValid={
           touched.plotType !== undefined
             ? touched.plotType && !isZNonEmptyString(errors?.plotType)
@@ -159,19 +191,22 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         }
         errorNode={errors?.plotType}
         className='w-full mt-4'
+        options={oasisPlotTypeOptions}
         onChange={(e) => {
-          handleChange(e);
+          setFieldValue('plotType', e?.value);
+          setFieldTouched('plotType', true);
         }}
         onBlur={(e) => {
           handleBlur(e);
         }}
       />
 
-      <ZInput
+      <ZSelect
         label='Plot Size*'
         name='plotSize'
-        value={values?.plotSize}
-        touched={touched?.plotSize}
+        value={oasisPlotSizeOptions.find(
+          (item) => item.value === values?.plotSize
+        )}
         isValid={
           touched.plotSize !== undefined
             ? touched.plotSize && !isZNonEmptyString(errors?.plotSize)
@@ -179,16 +214,18 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         }
         errorNode={errors?.plotSize}
         className='w-full mt-4'
+        options={oasisPlotSizeOptions}
         onChange={(e) => {
-          handleChange(e);
+          setFieldValue('plotSize', e?.value);
+          setFieldTouched('plotSize', true);
         }}
         onBlur={(e) => {
           handleBlur(e);
         }}
       />
 
-      <ZInput
-        label='Extra Percentage For Location Category'
+      <ZCheckbox
+        label='10% Extra Percentage For Location Category'
         name='extraPercentageForLocationCategory'
         value={values?.extraPercentageForLocationCategory}
         touched={touched?.extraPercentageForLocationCategory}
@@ -206,30 +243,37 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         onBlur={(e) => {
           handleBlur(e);
         }}
+        type='checkbox'
       />
 
-      <ZTextarea
-        label='Extra Percentage For Location Category Reason'
-        name='extraPercentageForLocationCategoryReason'
-        value={values?.extraPercentageForLocationCategoryReason}
-        touched={touched?.extraPercentageForLocationCategoryReason}
-        isValid={
-          touched.extraPercentageForLocationCategoryReason !== undefined
-            ? touched.extraPercentageForLocationCategoryReason &&
-              !isZNonEmptyString(
-                errors?.extraPercentageForLocationCategoryReason
-              )
-            : true
-        }
-        errorNode={errors?.extraPercentageForLocationCategoryReason}
-        className='w-full mt-4'
-        onChange={(e) => {
-          handleChange(e);
-        }}
-        onBlur={(e) => {
-          handleBlur(e);
-        }}
-      />
+      {values?.extraPercentageForLocationCategory ? (
+        <ZTextarea
+          label='Extra Percentage For Location Category Reason*'
+          name='extraPercentageForLocationCategoryReason'
+          value={values?.extraPercentageForLocationCategoryReason}
+          touched={touched?.extraPercentageForLocationCategoryReason}
+          isValid={
+            touched.extraPercentageForLocationCategoryReason !== undefined
+              ? touched.extraPercentageForLocationCategoryReason &&
+                !isZNonEmptyString(
+                  errors?.extraPercentageForLocationCategoryReason
+                )
+              : true
+          }
+          errorNode={errors?.extraPercentageForLocationCategoryReason}
+          className='w-full mt-4'
+          onChange={(e) => {
+            handleChange(e);
+          }}
+          onBlur={(e) => {
+            handleBlur(e);
+          }}
+        />
+      ) : null}
+
+      <h4 className='uppercase text-primary md:me-9 text-[1.5rem] font-black font-mont-heavy text-center mt-10'>
+        Personal Information
+      </h4>
 
       <ZInput
         label='Applicant Name*'
@@ -271,11 +315,12 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         }}
       />
 
-      <ZInput
+      <ZSelect
         label='Relation With Guardian*'
         name='relationWithGuardian'
-        value={values?.relationWithGuardian}
-        touched={touched?.relationWithGuardian}
+        value={guardianOptions.find(
+          (item) => item.value === values?.relationWithGuardian
+        )}
         isValid={
           touched.relationWithGuardian !== undefined
             ? touched.relationWithGuardian &&
@@ -284,8 +329,10 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         }
         errorNode={errors?.relationWithGuardian}
         className='w-full mt-4'
+        options={guardianOptions}
         onChange={(e) => {
-          handleChange(e);
+          setFieldValue('relationWithGuardian', e?.value);
+          setFieldTouched('relationWithGuardian', true);
         }}
         onBlur={(e) => {
           handleBlur(e);
@@ -414,6 +461,10 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         }}
       />
 
+      <h4 className='uppercase text-primary md:me-9 text-[1.5rem] font-black font-mont-heavy text-center mt-10'>
+        Nominee Information
+      </h4>
+
       <ZInput
         label='Nominee Name*'
         name='nomineeName'
@@ -455,11 +506,12 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         }}
       />
 
-      <ZInput
+      <ZSelect
         label='Nominee Relation With Guardian*'
         name='nomineeRelationWithGuardian'
-        value={values?.nomineeRelationWithGuardian}
-        touched={touched?.nomineeRelationWithGuardian}
+        value={guardianOptions.find(
+          (item) => item.value === values?.nomineeRelationWithGuardian
+        )}
         isValid={
           touched.nomineeRelationWithGuardian !== undefined
             ? touched.nomineeRelationWithGuardian &&
@@ -468,8 +520,10 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
         }
         errorNode={errors?.nomineeRelationWithGuardian}
         className='w-full mt-4'
+        options={guardianOptions}
         onChange={(e) => {
-          handleChange(e);
+          setFieldValue('nomineeRelationWithGuardian', e?.value);
+          setFieldTouched('nomineeRelationWithGuardian', true);
         }}
         onBlur={(e) => {
           handleBlur(e);
@@ -580,6 +634,10 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
           handleBlur(e);
         }}
       />
+
+      <h4 className='uppercase text-primary md:me-9 text-[1.5rem] font-black font-mont-heavy text-center mt-10'>
+        Payment Information
+      </h4>
 
       <ZSelect
         label='Payment Method*'

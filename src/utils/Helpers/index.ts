@@ -521,7 +521,7 @@ export const ZFilterAndPaginateData = <T>({
     canGoNext: true,
     canGoPrevious: true,
     to: 0,
-    from: 0,
+    from: 0
   };
   let _data = null;
 
@@ -681,4 +681,16 @@ export const replaceUrlDynamicParts = ({
   }
 
   return resultUrl;
+};
+
+export const camelToTitleCase = (camelCaseStr: string): string => {
+  // Split the camel case string into words
+  const words = camelCaseStr.replace(/([A-Z])/g, ' $1').split(' ');
+
+  // Capitalize the first letter of each word and join them back into a single string
+  const titleCaseStr = words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+  return titleCaseStr;
 };

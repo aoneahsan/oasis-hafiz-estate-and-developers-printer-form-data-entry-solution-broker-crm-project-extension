@@ -42,12 +42,12 @@ const HomePage: React.FC = () => {
             {/* Content and Buttons */}
             <div className='h-auto maxLg:pt-[2rem] relative z-10'>
               <h1 className='font-black lg:mt-5 relative z-10 font-mont-heavy text-[2.25rem] w-full text-center leading-[2.7rem] uppercase text-primary'>
-                Oasis - A Project of "Hafiz Estate & Developers"
+                The Oasis - A Project of "Hafiz Estate & Developers"
               </h1>
 
               <p className='mt-4 pt-[1px] relative z-10 tracking-wide pb-[2px] font-semibold font-roboto-regular leading-[120%] text-[1rem] text-primary'>
-                Welcome to Oasis by Hafiz Estate & Developers – Experience the
-                finest living in DHA. Contact us today to secure your dream
+                Welcome to The Oasis by Hafiz Estate & Developers – Experience
+                the finest living in DHA. Contact us today to secure your dream
                 home!
               </p>
 

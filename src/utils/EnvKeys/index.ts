@@ -5,7 +5,7 @@ const _env = import.meta.env;
 export const ENVS = {
   cryptoSecret:
     _env.VITE_CRYPTO_SECRET ??
-    'Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)',
+    'The Oasis - Hafiz Estate & Developers Project - Developed by Ahsan Mahmood - Manager @ Zaions (https://zaions.com)',
   firebase: {
     apiKey: _env.VITE_FRB_API_KEY ?? '',
     authDomain: _env.VITE_FRB_AUTH_DOMAIN ?? '',
