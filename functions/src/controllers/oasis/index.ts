@@ -7,12 +7,15 @@ import {
 } from '../../utils/helpers';
 import messages from '../../utils/constants/messages';
 import { fbDB } from '../../config/firebase';
+import { qrCodesHash } from '../../data';
 
 export const getOasisPlotDetails = async (req: Request, res: Response) => {
   try {
-    const _itemQrCode = req.body.plotQrCode;
+    const _itemQrCodeHash = req?.body?.plotQrCode ?? '';
 
-    if (_itemQrCode?.trim()?.length > 0) {
+    if (_itemQrCodeHash?.trim()?.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const _itemQrCode: any = (qrCodesHash as any)[_itemQrCodeHash];
       const _items = await fbDB
         .collection(ZTableNames.oasis)
         .where('qrCodeNumber', '==', _itemQrCode)

@@ -4,8 +4,9 @@ import Copyright from '@/Components/Inpage/Copyright';
 import { productVector } from '@/assets';
 import { IZOasisEntryForm } from '@/Types/oasis';
 import NotFound404Page from '@/Pages/Common/404';
-import { oasisDummyEntryData } from '@/Data/oasis/index.data';
 import { camelToTitleCase } from '@/utils/Helpers';
+import axiosInstance from '@/axiosInstance';
+import { useParams } from '@tanstack/react-router';
 
 const OasisFormEntryView: React.FC = () => {
   const [compState, setCompState] = useState<{
@@ -17,23 +18,40 @@ const OasisFormEntryView: React.FC = () => {
     apiRequestFinished: false,
     oasisEntryData: {}
   });
+  const { oasisEntryQrCode } = useParams({
+    strict: false
+  }) as { oasisEntryQrCode?: string };
 
   useEffect(() => {
-    setCompState((prev) => ({ ...prev, processing: true }));
+    (async () => {
+      setCompState((prev) => ({ ...prev, processing: true }));
 
-    // API request to get the oasis entry data
+      try {
+        const _res = await axiosInstance.post(
+          'https://default-qibwoacnxa-uc.a.run.app/zaions/oasis/get-plot-details',
+          {
+            plotQrCode: oasisEntryQrCode
+          }
+        );
+        console.log({ _res });
+        if (!!_res?.data && !!_res?.data?.data) {
+          const _resData = _res?.data?.data?.item;
+          if (_resData?.id) {
+            setCompState((prev) => ({
+              ...prev,
+              oasisEntryData: { ..._resData }
+            }));
+          }
+        }
+      } catch (error) {}
 
-    setCompState((prev) => ({
-      ...prev,
-      oasisEntryData: { ...oasisDummyEntryData }
-    }));
-
-    setCompState((prev) => ({
-      ...prev,
-      processing: false,
-      apiRequestFinished: true
-    }));
-  }, []);
+      setCompState((prev) => ({
+        ...prev,
+        processing: false,
+        apiRequestFinished: true
+      }));
+    })();
+  }, [oasisEntryQrCode]);
 
   if (compState.processing || !compState.apiRequestFinished) {
     return <div>Loading...</div>;
@@ -92,7 +110,7 @@ const OasisFormEntryView: React.FC = () => {
                   if (!_data) return null;
 
                   return (
-                    <div className='flex justify-between px-10 py-4'>
+                    <div className='flex justify-between px-10 py-4' key={el}>
                       <b>{camelToTitleCase(el)}:</b>
                       <span>{_data}</span>
                     </div>
