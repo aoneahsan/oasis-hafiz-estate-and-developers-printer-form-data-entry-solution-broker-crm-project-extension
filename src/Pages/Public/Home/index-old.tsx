@@ -49,7 +49,7 @@ const _OLDHomePage: React.FC = () => {
   // #region functions
   const signUpBtnClickHandler = (): void => {
     try {
-      void navigate({ to: AppRoutes.register });
+      // void navigate({ to: AppRoutes.register });
     } catch (error) {
       reportCustomError(error);
     }
@@ -57,7 +57,7 @@ const _OLDHomePage: React.FC = () => {
 
   const loginBtnClickHandler = (): void => {
     try {
-      void navigate({ to: AppRoutes.login });
+      // void navigate({ to: AppRoutes.login });
     } catch (error) {
       reportCustomError(error);
     }

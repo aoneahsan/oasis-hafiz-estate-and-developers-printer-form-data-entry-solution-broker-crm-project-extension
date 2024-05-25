@@ -21,8 +21,11 @@ export const privateRouteHandler = async (
   navigate: NavigateFn
 ): Promise<void> => {
   if (_firebaseAuth.currentUser === null) {
+    // navigate({
+    //   to: AppRoutes.login
+    // });
     navigate({
-      to: AppRoutes.login
+      to: AppRoutes.home
     });
   }
 };
@@ -45,7 +48,6 @@ export const homeRoute = createRoute({
     async (): Promise<Record<string, unknown>> =>
       await import('@/Pages/Public/Home')
   )
-  // beforeLoad: async ({ location }) => {},
 });
 
 // --- Login
@@ -55,8 +57,13 @@ export const loginRoute = createRoute({
   component: lazyRouteComponent(
     async (): Promise<Record<string, unknown>> =>
       await import('@/Pages/Public/Login')
-  ),
-  beforeLoad: ({ navigate }) => publicRouteHandler(navigate)
+  )
+  // beforeLoad: ({ navigate }) => publicRouteHandler(navigate)
+  // beforeLoad: ({ navigate }) => {
+  //   navigate({
+  //     to: AppRoutes.home
+  //   });
+  // }
 });
 
 // --- Register
@@ -66,8 +73,13 @@ export const registerRoute = createRoute({
   component: lazyRouteComponent(
     async (): Promise<Record<string, unknown>> =>
       await import('@/Pages/Public/Register')
-  ),
-  beforeLoad: ({ navigate }) => publicRouteHandler(navigate)
+  )
+  // beforeLoad: ({ navigate }) => publicRouteHandler(navigate)
+  // beforeLoad: ({ navigate }) => {
+  //   navigate({
+  //     to: AppRoutes.home
+  //   });
+  // }
 });
 
 // export const forgotRoute = createRoute({

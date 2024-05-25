@@ -67,7 +67,8 @@ export const zAxiosApiRequest = async <T>({
 
     // else if this is an authenticatedRequest and authToken is not fount then
   } else if (_isAuthenticatedRequest && _authToken === undefined) {
-    window.location.href = AppRoutes.login;
+    // window.location.href = AppRoutes.login;
+    window.location.href = AppRoutes.home;
   } else {
     throw new Error(messages.general.failed);
   }

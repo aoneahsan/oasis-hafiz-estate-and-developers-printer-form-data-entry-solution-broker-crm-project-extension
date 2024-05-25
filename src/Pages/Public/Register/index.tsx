@@ -104,7 +104,7 @@ const Register: React.FC = () => {
 
   const signInBtnClickHandler = (): void => {
     try {
-      void navigate({ to: AppRoutes.login });
+      // void navigate({ to: AppRoutes.login });
     } catch (error) {
       reportCustomError(error);
     }
@@ -226,7 +226,7 @@ const Register: React.FC = () => {
                             <span
                               className='inline-block underline ms-1 text-primary text-[0.75rem] font-bold leading-[1rem] cursor-pointer'
                               onClick={() => {
-                                void navigate({ to: AppRoutes.login });
+                                // void navigate({ to: AppRoutes.login });
                               }}
                             >
                               Sign in

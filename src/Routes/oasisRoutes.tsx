@@ -1,7 +1,7 @@
 import { createRoute, lazyRouteComponent } from '@tanstack/react-router';
 import tanstackRootRoute from './RootRoute';
 import { AppRoutes } from './AppRoutes';
-import { privateRouteHandler } from './AllRoutes';
+// import { privateRouteHandler } from './AllRoutes';
 
 export const oasisEntryForm = createRoute({
   getParentRoute: () => tanstackRootRoute,
@@ -9,6 +9,6 @@ export const oasisEntryForm = createRoute({
   component: lazyRouteComponent(
     async (): Promise<Record<string, unknown>> =>
       await import('@/Pages/oasis/OasisEntryForm')
-  ),
-  beforeLoad: ({ navigate }) => privateRouteHandler(navigate)
+  )
+  // beforeLoad: ({ navigate }) => privateRouteHandler(navigate)
 });

@@ -144,7 +144,8 @@ export const useZRQGetRequest = <T>({
           );
 
           // if we don't want to refresh the page then we need to use navigate(), we tried that right now but, it's giving a infinite loop error, so that's why right now going with window.location.href method
-          window.location.href = AppRoutes.login;
+          // window.location.href = AppRoutes.login;
+          window.location.href = AppRoutes.home;
 
           // showInfoNotification(MESSAGES.Login.loginExpiredMessage);
         } else if (_error?.status === ZErrorCodeEnum.notFound) {
@@ -252,7 +253,8 @@ export const useZRQCreateRequest = <T>({
         errorCode === ZErrorCodeEnum.unauthenticated
       ) {
         // if we don't want to refresh the page then we need to use navigate(), we tried that right now but, it's giving a infinite loop error, so that's why right now going with window.location.href method
-        window.location.href = AppRoutes.login;
+        // window.location.href = AppRoutes.login;
+        window.location.href = AppRoutes.home;
       }
     },
 
@@ -368,7 +370,8 @@ export const useZRQUpdateRequest = <T>({
         errorCode === ZErrorCodeEnum.unauthenticated
       ) {
         // if we don't want to refresh the page then we need to use navigate(), we tried that right now but, it's giving a infinite loop error, so that's why right now going with window.location.href method
-        window.location.href = AppRoutes.login;
+        // window.location.href = AppRoutes.login;
+        window.location.href = AppRoutes.home;
       }
     },
 
@@ -472,7 +475,8 @@ export const useZRQDeleteRequest = <T>({
         errorCode === ZErrorCodeEnum.unauthenticated
       ) {
         // if we don't want to refresh the page then we need to use navigate(), we tried that right now but, it's giving a infinite loop error, so that's why right now going with window.location.href method
-        window.location.href = AppRoutes.login;
+        // window.location.href = AppRoutes.login;
+        window.location.href = AppRoutes.home;
       }
     }
   });

@@ -12,7 +12,6 @@ import { useZNavigate } from '@/ZHooks/Navigation.hook';
 
 // #region ---- Custom Imports ----
 import {
-  Storage,
   isZNonEmptyString,
   reportCustomError,
   validateField
@@ -20,7 +19,6 @@ import {
 import ZInput from '@/Components/Elements/Input';
 import ZButton from '@/Components/Elements/Button';
 import Copyright from '@/Components/Inpage/Copyright';
-import { constants } from '@/utils/Constants';
 import {
   showErrorNotification,
   showSuccessNotification
@@ -64,7 +62,7 @@ const Login: React.FC = () => {
   // #region Functions
   const signUpBtnClickHandler = (): void => {
     try {
-      void navigate({ to: AppRoutes.register });
+      // void navigate({ to: AppRoutes.register });
     } catch (error) {
       reportCustomError(error);
     }

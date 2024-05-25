@@ -50,7 +50,7 @@ const LogoutModal: React.FC<{
       hideLoader();
 
       // Redirect to login.
-      window.location.href = AppRoutes.login;
+      window.location.href = AppRoutes.home;
     } catch (error) {
       // hiding loader.
       hideLoader();

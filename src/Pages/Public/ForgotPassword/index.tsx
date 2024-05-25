@@ -123,7 +123,7 @@ const ForgotPassword: React.FC = () => {
   // #region Function
   const signInBtnClickHandler = (): void => {
     try {
-      void navigate({ to: AppRoutes.login });
+      // void navigate({ to: AppRoutes.login });
     } catch (error) {
       reportCustomError(error);
     }
