@@ -135,8 +135,7 @@ const ZAuthNavigation: React.FC = () => {
             onClick={() => {
               if (!isSettingsRoute) {
                 void navigate({
-                  to: AppRoutes.authRoutes.profileSettingSub.credentials
-                    .completePath
+                  to: AppRoutes.oasis.entryForm
                 });
               }
             }}

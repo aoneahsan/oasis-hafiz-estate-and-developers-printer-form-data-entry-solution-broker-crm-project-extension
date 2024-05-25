@@ -10,8 +10,11 @@ import {
 // #region Custom imports
 import tanstackRootRoute from './RootRoute';
 import { AppRoutes } from '@/Routes/AppRoutes';
-import { _firebaseAuth } from '@/config/firebase';
+import { getAuth } from 'firebase/auth';
+import { _firebaseApp } from '@/config/firebase';
 // #endregion
+
+const _firebaseAuth = getAuth(_firebaseApp);
 
 // on window refresh
 export const privateRouteHandler = async (

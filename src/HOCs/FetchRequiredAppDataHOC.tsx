@@ -1,10 +1,13 @@
 // #region ---- Core Imports ----
 import React, { useEffect } from 'react';
-import { _firebaseAuth } from '@/config/firebase';
+import { getAuth } from 'firebase/auth';
 import { onAuthStateChanged, onIdTokenChanged } from 'firebase/auth';
 import { useSetRecoilState } from 'recoil';
 import { zUserIsAuthenticatedRStateAtom } from '@/Store/Auth/User';
+import { _firebaseApp } from '@/config/firebase';
 // #endregion
+
+const _firebaseAuth = getAuth(_firebaseApp);
 
 const FetchRequiredAppDataHOC: React.FC<{ children: React.ReactNode }> = ({
   children
@@ -15,6 +18,7 @@ const FetchRequiredAppDataHOC: React.FC<{ children: React.ReactNode }> = ({
 
   // #region useEffects
   useEffect(() => {
+    console.log({ user: _firebaseAuth.currentUser });
     onAuthStateChanged(
       _firebaseAuth,
       (_frbUser) => {

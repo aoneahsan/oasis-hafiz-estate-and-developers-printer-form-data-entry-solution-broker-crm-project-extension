@@ -289,10 +289,7 @@ const ForgotPassword: React.FC = () => {
           showSuccessNotification(messages.auth.resetPasswordSuccess);
 
           void navigate({
-            to: AppRoutes.authRoutes.invoices,
-            params: {
-              invoiceType: ZInvoiceTypeE.inv
-            }
+            to: AppRoutes.oasis.entryForm
           });
         }
       }

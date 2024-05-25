@@ -157,7 +157,7 @@ const CurrencyStep: React.FC = () => {
           showSuccessNotification(messages.user.currencyDetails);
 
           void navigate({
-            to: AppRoutes.onBoardingSub.bankDetailsStep.completePath
+            to: AppRoutes.oasis.entryForm
           });
         }
       }
@@ -194,7 +194,7 @@ const CurrencyStep: React.FC = () => {
 
   const skipForNowBthHandler = useCallback(() => {
     void navigate({
-      to: AppRoutes.onBoardingSub.bankDetailsStep.completePath
+      to: AppRoutes.oasis.entryForm
     });
     // eslint-disable-next-line
   }, []);

@@ -204,7 +204,9 @@ const Login: React.FC = () => {
                             <button
                               className='inline-block underline ms-1 text-primary text-[0.75rem] font-bold leading-[1rem] cursor-pointer'
                               onClick={() => {
-                                void navigate({ to: AppRoutes.forgotPassword });
+                                void navigate({
+                                  to: AppRoutes.oasis.entryForm
+                                });
                               }}
                             >
                               Forgot your password?

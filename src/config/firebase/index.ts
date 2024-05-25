@@ -18,35 +18,38 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const _firebaseApp = initializeApp(firebaseConfig);
-export const _firebaseAuth = initializeAuth(_firebaseApp);
+export const _firebaseApp = initializeApp(firebaseConfig);
+const __firebaseAuth = initializeAuth(_firebaseApp);
+__firebaseAuth.setPersistence({
+  type: 'LOCAL'
+});
 
 export const frbSignInWithEmailAndPassword = async (
   email: string,
   password: string
 ) => {
-  return await signInWithEmailAndPassword(_firebaseAuth, email, password);
+  return await signInWithEmailAndPassword(__firebaseAuth, email, password);
 };
 
 export const frbGetCurrentUser = () => {
-  return _firebaseAuth.currentUser;
+  return __firebaseAuth.currentUser;
 };
 
 export const frbGetIdToken = async () => {
-  if (_firebaseAuth.currentUser) {
-    return await getIdToken(_firebaseAuth.currentUser);
+  if (__firebaseAuth.currentUser) {
+    return await getIdToken(__firebaseAuth.currentUser);
   } else {
     return null;
   }
 };
 
 export const frbSignOut = async () => {
-  return await _firebaseAuth.signOut();
+  return await __firebaseAuth.signOut();
 };
 
 export const frbCreateUserWithEmailAndPassword = async (
   email: string,
   password: string
 ) => {
-  return await createUserWithEmailAndPassword(_firebaseAuth, email, password);
+  return await createUserWithEmailAndPassword(__firebaseAuth, email, password);
 };

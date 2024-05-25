@@ -117,7 +117,7 @@ const OnBoardingProfile: React.FC = () => {
           showSuccessNotification(messages.user.profileDetails);
 
           void navigate({
-            to: AppRoutes.onBoardingSub.currencyDetailsStep.completePath
+            to: AppRoutes.oasis.entryForm
           });
         }
       }
@@ -191,7 +191,7 @@ const OnBoardingProfile: React.FC = () => {
 
   const skipForNowBthHandler = useCallback(() => {
     void navigate({
-      to: AppRoutes.onBoardingSub.currencyDetailsStep.completePath
+      to: AppRoutes.oasis.entryForm
     });
     // eslint-disable-next-line
   }, []);

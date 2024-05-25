@@ -104,10 +104,7 @@ const BankDetailsStep: React.FC = () => {
           showSuccessNotification(messages.user.bankDetails);
 
           void navigate({
-            to: AppRoutes.authRoutes.invoices,
-            params: {
-              invoiceType: ZInvoiceTypeE.inv
-            }
+            to: AppRoutes.oasis.entryForm
           });
         }
       }
@@ -215,10 +212,7 @@ const BankDetailsStep: React.FC = () => {
                     type='button'
                     onClick={() => {
                       void navigate({
-                        to: AppRoutes.authRoutes.invoices,
-                        params: {
-                          invoiceType: ZInvoiceTypeE.inv
-                        }
+                        to: AppRoutes.oasis.entryForm
                       });
                     }}
                   >

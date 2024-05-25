@@ -77,50 +77,10 @@ import OasisEntryFormFields from '@/Components/oasis/OasisEntryFormFields';
 
 const OasisEntryFormAuthCheck: React.FC = () => {
   // When it's edit route that we will get clientId from route params
-  let clientId = '';
-  try {
-    const { clientId: _clientId } = useParams({
-      from: AppRoutes.authRoutes.clientSub.update.completePath
-    });
-
-    clientId = _clientId;
-  } catch (error) {}
 
   // #region Custom hooks
   const { updateRQCDataHandler } = useZUpdateRQCacheData();
   const navigate = useZNavigate();
-  // #endregion
-
-  // #region Apis
-  // If client create route the below api is used to create a client
-  const {
-    mutateAsync: createClientMutateAsync,
-    isPending: isCreateClientPending
-  } = useZRQCreateRequest({
-    _url: ApiUrlEnum.createClient
-  });
-
-  // If client update route the below api is used to update a client
-  const {
-    mutateAsync: updateClientMutateAsync,
-    isPending: isUpdateClientPending
-  } = useZRQUpdateRequest({
-    _url: ApiUrlEnum.updateClient
-  });
-
-  // If this is a update client route then clientId will be received from params though that client data will fetch below
-  const {
-    data: selectedClientData,
-    isFetching: isSelectedClientDataFetching,
-    error: selectedClientError
-  } = useZRQGetRequest<ZClientI>({
-    _url: ApiUrlEnum.viewClient,
-    _itemsIds: [clientId],
-    _urlDynamicParts: [RouteParams.clientId],
-    _key: [queryKeys.clients.get, clientId],
-    _shouldFetchWhenIdPassed: !isZNonEmptyString(clientId),
-    _extractType: ZRQGetRequestExtractEnum.extractItem
-  });
   // #endregion
 
   // #region Functions
@@ -129,204 +89,14 @@ const OasisEntryFormAuthCheck: React.FC = () => {
     setFieldError: zSetFieldErrorType
   ): Promise<void> => {
     try {
-      let _response;
-      if (isZNonEmptyString(clientId)) {
-        _response = await updateClientMutateAsync({
-          requestData: value,
-          itemIds: [clientId],
-          urlDynamicParts: [RouteParams.clientId]
-        });
-      } else {
-        _response = await createClientMutateAsync(value);
-      }
-
-      if (_response !== undefined && _response !== null) {
-        const _data = extractInnerData<ZClientI>(
-          _response,
-          extractInnerDataOptionsEnum.createRequestResponseItem
-        );
-        if (isZNonEmptyString(_data?.id)) {
-          await updateRQCDataHandler({
-            key: [queryKeys.clients.list],
-            data: _data,
-            id: clientId,
-            updaterAction: isZNonEmptyString(clientId)
-              ? ZRQUpdaterAction.replace
-              : ZRQUpdaterAction.add
-          });
-
-          if (isZNonEmptyString(clientId)) {
-            await updateRQCDataHandler({
-              key: [queryKeys.clients.get, clientId],
-              data: _data,
-              updaterAction: ZRQUpdaterAction.updateHole,
-              extractType: ZRQGetRequestExtractEnum.extractItem
-            });
-            showSuccessNotification(messages.client.update);
-          } else {
-            showSuccessNotification(messages.client.added);
-          }
-
-          await navigate({
-            to: AppRoutes.authRoutes.client
-          });
-        }
-      }
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const _data = extractInnerData<{
-          item: string[];
-          name: string[];
-          email: string[];
-          // phone_number: string[];
-          address: string[];
-          company: string[];
-          country: string[];
-          notes: string[];
-          registration_number: string[];
-          city: string[];
-          zipcode: string[];
-          vat_number: string[];
-          default_currency: string[];
-          bank_details: string[];
-        }>(
-          error?.response?.data,
-          extractInnerDataOptionsEnum.createRequestResponseData,
-          extractInnerDataObjectEnum.error
-        );
-        if (Array.isArray(_data?.item) && isZNonEmptyString(_data?.item[0])) {
-          showErrorNotification(messages.general.failed);
-        }
-
-        if (Array.isArray(_data?.name) && isZNonEmptyString(_data?.name[0])) {
-          setFieldError('name', _data?.name[0]);
-        }
-
-        if (Array.isArray(_data?.email) && isZNonEmptyString(_data?.email[0])) {
-          setFieldError('email', _data?.email[0]);
-        }
-
-        // if (_data?.phone_number !== undefined && isZNonEmptyString(_data?.phone_number[0])) {
-        //   setFieldError('phoneNumber', _data?.phone_number[0]);
-        // }
-
-        if (
-          Array.isArray(_data?.address) &&
-          isZNonEmptyString(_data?.address[0])
-        ) {
-          setFieldError('address', _data?.address[0]);
-        }
-
-        if (
-          Array.isArray(_data?.company) &&
-          isZNonEmptyString(_data?.company[0])
-        ) {
-          setFieldError('company', _data?.company[0]);
-        }
-
-        if (
-          Array.isArray(_data?.country) &&
-          isZNonEmptyString(_data?.country[0])
-        ) {
-          setFieldError('country', _data?.country[0]);
-        }
-
-        if (Array.isArray(_data?.notes) && isZNonEmptyString(_data?.notes[0])) {
-          setFieldError('note', _data?.notes[0]);
-        }
-
-        if (
-          Array.isArray(_data?.registration_number) &&
-          _data?.registration_number !== undefined &&
-          isZNonEmptyString(_data?.registration_number[0])
-        ) {
-          setFieldError('registration_number', _data?.registration_number[0]);
-        }
-
-        if (Array.isArray(_data?.city) && isZNonEmptyString(_data?.city[0])) {
-          setFieldError('city', _data?.city[0]);
-        }
-
-        if (
-          Array.isArray(_data?.zipcode) &&
-          isZNonEmptyString(_data?.zipcode[0])
-        ) {
-          setFieldError('zipcode', _data?.zipcode[0]);
-        }
-
-        if (
-          Array.isArray(_data?.vat_number) &&
-          isZNonEmptyString(_data?.vat_number[0])
-        ) {
-          setFieldError('vat_number', _data?.vat_number[0]);
-        }
-
-        if (
-          Array.isArray(_data?.default_currency) &&
-          isZNonEmptyString(_data?.default_currency[0])
-        ) {
-          setFieldError('default_currency', _data?.default_currency[0]);
-        }
-
-        if (
-          Array.isArray(_data?.bank_details) &&
-          isZNonEmptyString(_data?.bank_details[0])
-        ) {
-          setFieldError('bank_details', _data?.bank_details[0]);
-        }
-      }
       reportCustomError(error);
     }
   };
   // #endregion
 
-  // #region useEffect
-  useEffect(() => {
-    if (selectedClientError !== undefined && selectedClientError !== null) {
-      if (selectedClientError instanceof AxiosError) {
-        const _errorResponse = selectedClientError?.response?.data;
-
-        if (_errorResponse !== undefined && _errorResponse !== null) {
-          const _errors = extractInnerData<string[]>(
-            _errorResponse,
-            extractInnerDataOptionsEnum.createRequestResponseItem,
-            extractInnerDataObjectEnum.error
-          );
-          if (_errors !== undefined && isZNonEmptyString(_errors[0])) {
-            showErrorNotification(_errors[0]);
-
-            void navigate({
-              to: AppRoutes.authRoutes.client
-            });
-          }
-        }
-      }
-    }
-    // eslint-disable-next-line
-  }, [selectedClientError]);
-
   // #endregion
 
-  const formikInitialValues = useMemo(
-    () => ({
-      company: selectedClientData?.company ?? '',
-      address: selectedClientData?.address ?? '',
-      name: selectedClientData?.name ?? '',
-      email: selectedClientData?.email ?? '',
-      // phoneNumber: selectedClientData?.phone_number ?? '',
-      country: selectedClientData?.country ?? '',
-      note: selectedClientData?.notes ?? '',
-      registration_number: selectedClientData?.registration_number ?? '',
-      city: selectedClientData?.city ?? '',
-      zipcode: selectedClientData?.zipcode ?? '',
-      default_currency:
-        selectedClientData?.default_currency ??
-        constants.defaultValues.currency,
-      vat_number: selectedClientData?.vat_number ?? '',
-      bank_details: selectedClientData?.bank_details ?? ''
-    }),
-    [selectedClientData]
-  );
   return (
     <div className='relative flex flex-col items-center justify-between w-full min-h-screen pt-5 overflow-x-hidden bg-secondary h max-h-max lg:pe-8 maxLg:px-2'>
       <div className='max-w-[85.4rem] w-full mx-auto'>
@@ -337,7 +107,40 @@ const OasisEntryFormAuthCheck: React.FC = () => {
             Add Client Details
           </h2>
           <ZFormik
-            initialValues={formikInitialValues}
+            initialValues={{
+              // Property selection
+              plotNumber: '',
+              registrationNumber: '',
+              serialNumber: '',
+              plotType: '',
+              plotSize: '',
+              extraPercentageForLocationCategory: '',
+              extraPercentageForLocationCategoryReason: '',
+
+              // Personal Information
+              applicantName: '',
+              guardianName: '',
+              relationWithGuardian: '',
+              cnicNumber: '',
+              passportNumber: '',
+              mailAddress: '',
+              permanentAddress: '',
+              phoneNumber: '',
+              mobileNumber: '',
+
+              // Nominee Information
+              nomineeName: '',
+              nomineeGuardianName: '',
+              nomineeRelationWithGuardian: '',
+              nomineeCnicNumber: '',
+              nomineeRelationWithApplicant: '',
+              nomineeAddress: '',
+              nomineePhoneNumber: '',
+              nomineeMobileNumber: '',
+
+              // Payment Information
+              paymentMethod: ''
+            }}
             enableReinitialize={true}
             validate={(values) => {
               const errors: { default_currency?: string } = {};
@@ -407,38 +210,64 @@ const OasisEntryFormAuthCheck: React.FC = () => {
                 ]
               );
 
-              if (
-                values?.default_currency === null ||
-                values?.default_currency === undefined ||
-                (typeof values?.default_currency === 'object' &&
-                  values?.default_currency !== null &&
-                  !isZNonEmptyString(String(values?.default_currency?.value)))
-              ) {
-                errors.default_currency = messages.formValidations.currency;
-              } else {
-                delete errors?.default_currency;
-              }
-
               return errors;
             }}
             onSubmit={(values, { setFieldError }) => {
-              const zStringifyData = zStringify({
-                name: values.name,
-                email: values.email,
-                // phone_number: values.phoneNumber,
-                address: values.address,
-                company: values.company,
-                country: values.country,
-                notes: values.note,
-                registration_number: values.registration_number,
-                city: values.city,
-                zipcode: values.zipcode,
-                vat_number: values.vat_number,
-                default_currency: zStringify(values.default_currency),
-                bank_details: values.bank_details
-              });
+              const {
+                plotNumber,
+                registrationNumber,
+                serialNumber,
+                plotType,
+                plotSize,
+                extraPercentageForLocationCategory,
+                extraPercentageForLocationCategoryReason,
+                applicantName,
+                guardianName,
+                relationWithGuardian,
+                cnicNumber,
+                passportNumber,
+                mailAddress,
+                permanentAddress,
+                phoneNumber,
+                mobileNumber,
+                nomineeName,
+                nomineeGuardianName,
+                nomineeRelationWithGuardian,
+                nomineeCnicNumber,
+                nomineeRelationWithApplicant,
+                nomineeAddress,
+                nomineePhoneNumber,
+                nomineeMobileNumber,
+                paymentMethod
+              } = values;
 
-              void formikSubmitHandler(zStringifyData, setFieldError);
+              console.log({
+                plotNumber,
+                registrationNumber,
+                serialNumber,
+                plotType,
+                plotSize,
+                extraPercentageForLocationCategory,
+                extraPercentageForLocationCategoryReason,
+                applicantName,
+                guardianName,
+                relationWithGuardian,
+                cnicNumber,
+                passportNumber,
+                mailAddress,
+                permanentAddress,
+                phoneNumber,
+                mobileNumber,
+                nomineeName,
+                nomineeGuardianName,
+                nomineeRelationWithGuardian,
+                nomineeCnicNumber,
+                nomineeRelationWithApplicant,
+                nomineeAddress,
+                nomineePhoneNumber,
+                nomineeMobileNumber,
+                paymentMethod
+              });
             }}
           >
             {({ isValid, handleSubmit, dirty }) => {
@@ -454,11 +283,7 @@ const OasisEntryFormAuthCheck: React.FC = () => {
                       <ZButton
                         fill={ZFill.clear}
                         className='uppercase'
-                        onClick={() => {
-                          void navigate({
-                            to: AppRoutes.authRoutes.client
-                          });
-                        }}
+                        type='reset'
                       >
                         Cancel
                       </ZButton>
@@ -466,23 +291,10 @@ const OasisEntryFormAuthCheck: React.FC = () => {
                         type='submit'
                         className={ZClassNames({
                           'flex items-center justify-center uppercase': true,
-                          'cursor-not-allowed':
-                            isCreateClientPending ||
-                            isUpdateClientPending ||
-                            !dirty
+                          'cursor-not-allowed': !dirty
                         })}
-                        disabled={
-                          !isValid ||
-                          isCreateClientPending ||
-                          isUpdateClientPending ||
-                          !dirty
-                        }
+                        disabled={!isValid || !dirty}
                       >
-                        {isCreateClientPending || isUpdateClientPending ? (
-                          <SpinSvg className='me-2 text-secondary' />
-                        ) : (
-                          ''
-                        )}
                         Save
                       </ZButton>
                     </div>

@@ -55,18 +55,6 @@ const ProfileForm: React.FC<ProfileFormI> = ({
     setFieldTouched
   } = useZFormikContext<ZAuthI>();
 
-  const isAuthProfileDetailPage = useMatchRoute()({
-    to: AppRoutes.authRoutes.profileSettingSub.profileDetails.completePath
-  });
-
-  const isClientCreatePage = useMatchRoute()({
-    to: AppRoutes.authRoutes.clientSub.create.completePath
-  });
-
-  const isClientUpdatePage = useMatchRoute()({
-    to: AppRoutes.authRoutes.clientSub.update.completePath
-  });
-
   const containerStyle = useMemo(
     () => ({
       maxWidth: inputMaxWidth,
@@ -123,28 +111,25 @@ const ProfileForm: React.FC<ProfileFormI> = ({
         }}
       />
 
-      {/* Name filed */}
-      {isAuthProfileDetailPage !== false && (
-        <ZInput
-          label='Your Name*'
-          name='name'
-          value={values?.name}
-          touched={touched?.name}
-          isValid={
-            touched.name !== undefined
-              ? touched.name && !isZNonEmptyString(errors?.name)
-              : true
-          }
-          errorNode={errors?.name}
-          className='w-full mt-4'
-          onChange={(e) => {
-            handleChange(e);
-          }}
-          onBlur={(e) => {
-            handleBlur(e);
-          }}
-        />
-      )}
+      <ZInput
+        label='Your Name*'
+        name='name'
+        value={values?.name}
+        touched={touched?.name}
+        isValid={
+          touched.name !== undefined
+            ? touched.name && !isZNonEmptyString(errors?.name)
+            : true
+        }
+        errorNode={errors?.name}
+        className='w-full mt-4'
+        onChange={(e) => {
+          handleChange(e);
+        }}
+        onBlur={(e) => {
+          handleBlur(e);
+        }}
+      />
 
       {/* Zip code filed */}
       <ZInput
@@ -212,75 +197,69 @@ const ProfileForm: React.FC<ProfileFormI> = ({
       />
 
       {/* Contact full name */}
-      {isClientCreatePage !== false || isClientUpdatePage !== false ? (
-        <ZInput
-          label='Contact full name'
-          name='name'
-          value={values?.name}
-          touched={touched?.name}
-          isValid={
-            touched.name !== undefined
-              ? touched.name && !isZNonEmptyString(errors?.name)
-              : true
-          }
-          errorNode={errors?.name}
-          className='w-full mt-4'
-          onChange={(e) => {
-            handleChange(e);
-          }}
-          onBlur={(e) => {
-            handleBlur(e);
-          }}
-        />
-      ) : null}
+      <ZInput
+        label='Contact full name'
+        name='name'
+        value={values?.name}
+        touched={touched?.name}
+        isValid={
+          touched.name !== undefined
+            ? touched.name && !isZNonEmptyString(errors?.name)
+            : true
+        }
+        errorNode={errors?.name}
+        className='w-full mt-4'
+        onChange={(e) => {
+          handleChange(e);
+        }}
+        onBlur={(e) => {
+          handleBlur(e);
+        }}
+      />
 
       {/* Email address */}
-      {isClientCreatePage !== false || isClientUpdatePage !== false ? (
-        <ZInput
-          label='Email address'
-          name='email'
-          value={values?.email}
-          touched={touched?.email}
-          isValid={
-            touched.email !== undefined
-              ? touched.email && !isZNonEmptyString(errors?.email)
-              : true
-          }
-          errorNode={errors?.email}
-          className='w-full mt-4'
-          onChange={(e) => {
-            handleChange(e);
-          }}
-          onBlur={(e) => {
-            handleBlur(e);
-          }}
-        />
-      ) : null}
+      <ZInput
+        label='Email address'
+        name='email'
+        value={values?.email}
+        touched={touched?.email}
+        isValid={
+          touched.email !== undefined
+            ? touched.email && !isZNonEmptyString(errors?.email)
+            : true
+        }
+        errorNode={errors?.email}
+        className='w-full mt-4'
+        onChange={(e) => {
+          handleChange(e);
+        }}
+        onBlur={(e) => {
+          handleBlur(e);
+        }}
+      />
 
       {/* Currency filed */}
-      {isClientCreatePage !== false || isClientUpdatePage !== false ? (
-        <ZSelect
-          label='Default currency*'
-          name='default_currency'
-          isMulti={false}
-          className='w-full mt-4'
-          value={values?.default_currency}
-          onBlur={(e) => {
-            void setFieldTouched('default_currency', true);
-          }}
-          onChange={(e) => {
-            void setFieldValue('default_currency', e, false);
-          }}
-          isValid={
-            touched.default_currency !== undefined
-              ? touched.default_currency &&
-                !isZNonEmptyString(errors?.default_currency)
-              : true
-          }
-          errorNode={errors?.default_currency}
-          options={ZCurrenciesData}
-        />
-      ) : null}
+      <ZSelect
+        label='Default currency*'
+        name='default_currency'
+        isMulti={false}
+        className='w-full mt-4'
+        value={values?.default_currency}
+        onBlur={(e) => {
+          void setFieldTouched('default_currency', true);
+        }}
+        onChange={(e) => {
+          void setFieldValue('default_currency', e, false);
+        }}
+        isValid={
+          touched.default_currency !== undefined
+            ? touched.default_currency &&
+              !isZNonEmptyString(errors?.default_currency)
+            : true
+        }
+        errorNode={errors?.default_currency}
+        options={ZCurrenciesData}
+      />
 
       {/* Company Registration Number filed */}
       <ZInput
@@ -326,28 +305,26 @@ const ProfileForm: React.FC<ProfileFormI> = ({
       />
 
       {/* Note filed */}
-      {isClientCreatePage !== false || isClientUpdatePage !== false ? (
-        <ZTextarea
-          label='Note'
-          name='note'
-          value={values?.note}
-          touched={touched?.note}
-          isValid={
-            touched.note !== undefined
-              ? touched.note && !isZNonEmptyString(errors?.note)
-              : true
-          }
-          errorNode={errors?.note}
-          className='w-full mt-4'
-          onChange={(e) => {
-            handleChange(e);
-          }}
-          onBlur={(e) => {
-            handleBlur(e);
-          }}
-          rows={2}
-        />
-      ) : null}
+      <ZTextarea
+        label='Note'
+        name='note'
+        value={values?.note}
+        touched={touched?.note}
+        isValid={
+          touched.note !== undefined
+            ? touched.note && !isZNonEmptyString(errors?.note)
+            : true
+        }
+        errorNode={errors?.note}
+        className='w-full mt-4'
+        onChange={(e) => {
+          handleChange(e);
+        }}
+        onBlur={(e) => {
+          handleBlur(e);
+        }}
+        rows={2}
+      />
     </div>
   );
 };

@@ -142,12 +142,6 @@ export const useZRQGetRequest = <T>({
           const authToken = await Storage.get(
             constants.localstorageKeys.authToken
           );
-          if (authToken !== null || authToken !== undefined) {
-            await Promise.all([
-              Storage.remove(constants.localstorageKeys.userData),
-              Storage.remove(constants.localstorageKeys.authToken)
-            ]);
-          }
 
           // if we don't want to refresh the page then we need to use navigate(), we tried that right now but, it's giving a infinite loop error, so that's why right now going with window.location.href method
           window.location.href = AppRoutes.login;
@@ -257,17 +251,6 @@ export const useZRQCreateRequest = <T>({
         errorCode !== undefined &&
         errorCode === ZErrorCodeEnum.unauthenticated
       ) {
-        // clear localstorage
-        const authToken = await Storage.get(
-          constants.localstorageKeys.authToken
-        );
-        if (authToken !== null || authToken !== undefined) {
-          await Promise.all([
-            Storage.remove(constants.localstorageKeys.userData),
-            Storage.remove(constants.localstorageKeys.authToken)
-          ]);
-        }
-
         // if we don't want to refresh the page then we need to use navigate(), we tried that right now but, it's giving a infinite loop error, so that's why right now going with window.location.href method
         window.location.href = AppRoutes.login;
       }
@@ -384,17 +367,6 @@ export const useZRQUpdateRequest = <T>({
         errorCode !== undefined &&
         errorCode === ZErrorCodeEnum.unauthenticated
       ) {
-        // clear localstorage
-        const authToken = await Storage.get(
-          constants.localstorageKeys.authToken
-        );
-        if (authToken !== null || authToken !== undefined) {
-          await Promise.all([
-            Storage.remove(constants.localstorageKeys.userData),
-            Storage.remove(constants.localstorageKeys.authToken)
-          ]);
-        }
-
         // if we don't want to refresh the page then we need to use navigate(), we tried that right now but, it's giving a infinite loop error, so that's why right now going with window.location.href method
         window.location.href = AppRoutes.login;
       }
@@ -499,17 +471,6 @@ export const useZRQDeleteRequest = <T>({
         errorCode !== undefined &&
         errorCode === ZErrorCodeEnum.unauthenticated
       ) {
-        // clear localstorage
-        const authToken = await Storage.get(
-          constants.localstorageKeys.authToken
-        );
-        if (authToken !== null || authToken !== undefined) {
-          await Promise.all([
-            Storage.remove(constants.localstorageKeys.userData),
-            Storage.remove(constants.localstorageKeys.authToken)
-          ]);
-        }
-
         // if we don't want to refresh the page then we need to use navigate(), we tried that right now but, it's giving a infinite loop error, so that's why right now going with window.location.href method
         window.location.href = AppRoutes.login;
       }

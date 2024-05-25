@@ -4,7 +4,6 @@ import React, { useMemo } from 'react';
 // #endregion
 
 // #region ---- Packages Imports ----
-import { useMatchRoute } from '@tanstack/react-router';
 import { useZFormikContext } from '@/Packages/Formik';
 
 // #endregion
@@ -12,19 +11,11 @@ import { useZFormikContext } from '@/Packages/Formik';
 // #region ---- Custom Imports ----
 import ZInput from '@/Components/Elements/Input';
 import ZSelect from '@/Components/Elements/Select';
-import { AppRoutes } from '@/Routes/AppRoutes';
 import { isZNonEmptyString } from '@/utils/Helpers';
 
 // #endregion
 
-// #region ---- Types Imports ----
-import { type ZAuthI } from '@/Types/Auth/index.type';
-
-// #endregion
-
 // #region ---- Store Imports ----
-import { ZCountryData } from '@/Data/Countries.data';
-import { ZCurrenciesData } from '@/Data/Currencies.data';
 import ZTextarea from '@/Components/Elements/Textarea';
 import { IZOasisEntryForm } from '@/Types/oasis';
 
