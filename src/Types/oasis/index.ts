@@ -7,7 +7,7 @@ export interface IZOasisEntryForm {
   serialNumber?: string;
   plotType?: string;
   plotSize?: string;
-  extraPercentageForLocationCategory?: number;
+  extraPercentageForLocationCategory?: string;
   extraPercentageForLocationCategoryReason?: string;
 
   // Personal Information

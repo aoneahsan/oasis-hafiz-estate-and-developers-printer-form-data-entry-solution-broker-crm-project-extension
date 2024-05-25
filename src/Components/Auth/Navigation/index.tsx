@@ -23,6 +23,8 @@ import { ZColorEnum, ZFill } from '@/utils/Enums/Elements.enum';
 import { CloseSvg, ExitSvg, MenuSvg, productLogo } from '@/assets';
 import { type ZGenericObject } from '@/Types/Global/index.type';
 import { frbSignOut } from '@/config/firebase';
+import { useRecoilValue } from 'recoil';
+import { zUserRStateAtom } from '@/Store/Auth/User';
 
 // #endregion
 
@@ -105,6 +107,7 @@ const LogoutModal: React.FC<{
 const ZAuthNavigation: React.FC = () => {
   // #region Custom Hooks
   const { openSidebar } = useZSideBar(ZNavSidebarContent);
+  const sa = useRecoilValue(zUserRStateAtom);
 
   // #region Modals
   const { showModal: showLogoutModal } = useZModal({

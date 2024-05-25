@@ -6,6 +6,8 @@ import {
   getIdToken,
   createUserWithEmailAndPassword
 } from 'firebase/auth';
+import { getFirestore, addDoc, getDoc, collection } from 'firebase/firestore';
+import { IZOasisEntryForm } from '@/Types/oasis';
 
 const firebaseConfig = {
   apiKey: ENVS.firebase.apiKey,
@@ -20,9 +22,10 @@ const firebaseConfig = {
 // Initialize Firebase
 export const _firebaseApp = initializeApp(firebaseConfig);
 const __firebaseAuth = initializeAuth(_firebaseApp);
-__firebaseAuth.setPersistence({
-  type: 'LOCAL'
-});
+// __firebaseAuth.setPersistence({
+//   type: 'LOCAL'
+// });
+const _firebaseFirestore = getFirestore(_firebaseApp);
 
 export const frbSignInWithEmailAndPassword = async (
   email: string,
@@ -52,4 +55,14 @@ export const frbCreateUserWithEmailAndPassword = async (
   password: string
 ) => {
   return await createUserWithEmailAndPassword(__firebaseAuth, email, password);
+};
+
+export const addOasisFormEntryInFirestore = async (data: IZOasisEntryForm) => {
+  const _collectionRef = collection(_firebaseFirestore, 'oasis');
+
+  const _itemRef = await addDoc(_collectionRef, data);
+
+  const _item = await getDoc(_itemRef);
+
+  return _item.data();
 };

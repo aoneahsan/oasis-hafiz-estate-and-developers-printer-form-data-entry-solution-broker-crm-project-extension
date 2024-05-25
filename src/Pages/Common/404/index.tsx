@@ -26,7 +26,7 @@ import { useZNavigate } from '@/ZHooks/Navigation.hook';
 import { Z404Svg } from '@/assets';
 import { AppRoutes } from '@/Routes/AppRoutes';
 import { ZInvoiceTypeE } from '@/Types/Auth/Invoice';
-import { zUserIsAuthenticatedRStateAtom } from '@/Store/Auth/User';
+import { zUserRStateAtom } from '@/Store/Auth/User';
 
 // #endregion
 
@@ -36,7 +36,7 @@ import { zUserIsAuthenticatedRStateAtom } from '@/Store/Auth/User';
 
 const NotFound404Page: React.FC = () => {
   const navigate = useZNavigate();
-  const isAuthenticated = useRecoilValue(zUserIsAuthenticatedRStateAtom);
+  const zUserRState = useRecoilValue(zUserRStateAtom);
 
   return (
     <div className='w-full lg:pt-[4rem] maxLg:pt-[2rem] pb-[2rem] h-screen bg-secondary text-center flex items-center justify-center flex-col'>
@@ -48,7 +48,7 @@ const NotFound404Page: React.FC = () => {
       <ZButton
         className='uppercase mt-9'
         onClick={() => {
-          if (!!isAuthenticated) {
+          if (!!zUserRState) {
             void navigate({
               to: AppRoutes.oasis.entryForm
             });

@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 
 import { User } from 'firebase/auth';
 
-export const zUserIsAuthenticatedRStateAtom = atom<User | null>({
-  key: 'zUserIsAuthenticatedRStateAtom_key',
+export const zUserRStateAtom = atom<User | null>({
+  key: 'zUserRStateAtom_key',
   default: null
 });

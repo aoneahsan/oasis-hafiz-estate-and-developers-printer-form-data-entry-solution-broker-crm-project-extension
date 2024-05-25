@@ -46,7 +46,7 @@ const OasisEntryFormFields: React.FC<OasisEntryFormFieldsI> = ({
     setFieldValue,
     setFieldTouched
   } = useZFormikContext<IZOasisEntryForm>();
-  console.log({ values, touched, errors });
+
   const containerStyle = useMemo(
     () => ({
       maxWidth: inputMaxWidth,

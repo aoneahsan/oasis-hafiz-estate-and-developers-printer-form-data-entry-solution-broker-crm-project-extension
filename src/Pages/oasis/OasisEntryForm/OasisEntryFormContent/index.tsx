@@ -1,16 +1,10 @@
 // #region ---- Core Imports ----
-import React from 'react';
-
+import React, { useState } from 'react';
 // #endregion
 
 // #region ---- Packages Imports ----
-import {
-  ZFormik,
-  ZFormikForm,
-  type zSetFieldErrorType
-} from '@/Packages/Formik';
+import { ZFormik, ZFormikForm } from '@/Packages/Formik';
 import { ZClassNames } from '@/Packages/ClassNames';
-
 // #endregion
 
 // #region ---- Custom Imports ----
@@ -18,38 +12,44 @@ import ZAuthNavigation from '@/Components/Auth/Navigation';
 import Copyright from '@/Components/Inpage/Copyright';
 import ZButton from '@/Components/Elements/Button';
 import { reportCustomError, validateFields } from '@/utils/Helpers';
-
 // #endregion
 
 // #region ---- Types Imports ----
 import { ZFill } from '@/utils/Enums/Elements.enum';
 import { zValidationRuleE } from '@/utils/Enums/index.enum';
-
-// #endregion
-
-// #region ---- Store Imports ----
-
-// #endregion
-
-// #region ---- Images Imports ----
-
 // #endregion
 
 // #region ---- Types Imports ----
 import { productVector } from '@/assets';
 import OasisEntryFormFields from '@/Components/oasis/OasisEntryFormFields';
-
+import { IZOasisEntryForm } from '@/Types/oasis';
+import { addOasisFormEntryInFirestore } from '@/config/firebase';
 // #endregion
 
 const OasisEntryFormContent: React.FC = () => {
+  const [compState, setCompState] = useState<{ processing: boolean }>({
+    processing: false
+  });
+
   // #region Functions
   const formikSubmitHandler = async (
-    value: string,
-    setFieldError: zSetFieldErrorType
+    data: IZOasisEntryForm,
+    callBack: () => void
   ): Promise<void> => {
+    setCompState({ ...compState, processing: true });
     try {
+      const _resData = await addOasisFormEntryInFirestore(data);
+
+      console.log({
+        ml: 'OasisEntryFormContent -> formikSubmitHandler -> _resData',
+        _resData
+      });
+
+      callBack();
     } catch (error) {
       reportCustomError(error);
+    } finally {
+      setCompState({ ...compState, processing: false });
     }
   };
   // #endregion
@@ -68,37 +68,37 @@ const OasisEntryFormContent: React.FC = () => {
           <ZFormik
             initialValues={{
               // Property selection
-              plotNumber: '',
-              registrationNumber: '',
-              serialNumber: '',
-              plotType: '',
-              plotSize: '',
-              extraPercentageForLocationCategory: '',
-              extraPercentageForLocationCategoryReason: '',
+              plotNumber: 'asd',
+              registrationNumber: 'asd',
+              serialNumber: 'asd',
+              plotType: 'asd',
+              plotSize: 'asd',
+              extraPercentageForLocationCategory: 'asd',
+              extraPercentageForLocationCategoryReason: 'asd',
 
               // Personal Information
-              applicantName: '',
-              guardianName: '',
-              relationWithGuardian: '',
-              cnicNumber: '',
-              passportNumber: '',
-              mailAddress: '',
-              permanentAddress: '',
-              phoneNumber: '',
-              mobileNumber: '',
+              applicantName: 'asd',
+              guardianName: 'asd',
+              relationWithGuardian: 'asd',
+              cnicNumber: 'asd',
+              passportNumber: 'asd',
+              mailAddress: 'asd',
+              permanentAddress: 'asd',
+              phoneNumber: 'asd',
+              mobileNumber: 'asd',
 
               // Nominee Information
-              nomineeName: '',
-              nomineeGuardianName: '',
-              nomineeRelationWithGuardian: '',
-              nomineeCnicNumber: '',
-              nomineeRelationWithApplicant: '',
-              nomineeAddress: '',
-              nomineePhoneNumber: '',
-              nomineeMobileNumber: '',
+              nomineeName: 'asd',
+              nomineeGuardianName: 'asd',
+              nomineeRelationWithGuardian: 'asd',
+              nomineeCnicNumber: 'asd',
+              nomineeRelationWithApplicant: 'asd',
+              nomineeAddress: 'asd',
+              nomineePhoneNumber: 'asd',
+              nomineeMobileNumber: 'asd',
 
               // Payment Information
-              paymentMethod: ''
+              paymentMethod: 'cash'
             }}
             enableReinitialize={true}
             validate={(values) => {
@@ -171,7 +171,7 @@ const OasisEntryFormContent: React.FC = () => {
 
               return errors;
             }}
-            onSubmit={(values, { setFieldError }) => {
+            onSubmit={(values, { resetForm }) => {
               const {
                 plotNumber,
                 registrationNumber,
@@ -200,33 +200,38 @@ const OasisEntryFormContent: React.FC = () => {
                 paymentMethod
               } = values;
 
-              console.log({
-                plotNumber,
-                registrationNumber,
-                serialNumber,
-                plotType,
-                plotSize,
-                extraPercentageForLocationCategory,
-                extraPercentageForLocationCategoryReason,
-                applicantName,
-                guardianName,
-                relationWithGuardian,
-                cnicNumber,
-                passportNumber,
-                mailAddress,
-                permanentAddress,
-                phoneNumber,
-                mobileNumber,
-                nomineeName,
-                nomineeGuardianName,
-                nomineeRelationWithGuardian,
-                nomineeCnicNumber,
-                nomineeRelationWithApplicant,
-                nomineeAddress,
-                nomineePhoneNumber,
-                nomineeMobileNumber,
-                paymentMethod
-              });
+              formikSubmitHandler(
+                {
+                  plotNumber,
+                  registrationNumber,
+                  serialNumber,
+                  plotType,
+                  plotSize,
+                  extraPercentageForLocationCategory,
+                  extraPercentageForLocationCategoryReason,
+                  applicantName,
+                  guardianName,
+                  relationWithGuardian,
+                  cnicNumber,
+                  passportNumber,
+                  mailAddress,
+                  permanentAddress,
+                  phoneNumber,
+                  mobileNumber,
+                  nomineeName,
+                  nomineeGuardianName,
+                  nomineeRelationWithGuardian,
+                  nomineeCnicNumber,
+                  nomineeRelationWithApplicant,
+                  nomineeAddress,
+                  nomineePhoneNumber,
+                  nomineeMobileNumber,
+                  paymentMethod
+                },
+                () => {
+                  resetForm();
+                }
+              );
             }}
           >
             {({ isValid, handleSubmit, dirty }) => {
@@ -243,6 +248,7 @@ const OasisEntryFormContent: React.FC = () => {
                         fill={ZFill.clear}
                         className='uppercase'
                         type='reset'
+                        disabled={!dirty || compState.processing}
                       >
                         Cancel
                       </ZButton>
@@ -250,9 +256,9 @@ const OasisEntryFormContent: React.FC = () => {
                         type='submit'
                         className={ZClassNames({
                           'flex items-center justify-center uppercase': true,
-                          'cursor-not-allowed': !dirty
+                          'cursor-not-allowed': !isValid || compState.processing
                         })}
-                        disabled={!isValid || !dirty}
+                        disabled={!isValid || compState.processing}
                       >
                         Save
                       </ZButton>
