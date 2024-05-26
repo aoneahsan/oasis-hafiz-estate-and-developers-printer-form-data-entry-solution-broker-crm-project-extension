@@ -14,10 +14,25 @@ importers:
       '@capacitor/core':
         specifier: ^6.0.0
         version: 6.0.0
+      '@capacitor/device':
+        specifier: ^6.0.0
+        version: 6.0.0(@capacitor/core@6.0.0)
       '@capacitor/dialog':
         specifier: ^6.0.0
         version: 6.0.0(@capacitor/core@6.0.0)
+      '@capacitor/geolocation':
+        specifier: ^6.0.0
+        version: 6.0.0(@capacitor/core@6.0.0)
+      '@capacitor/local-notifications':
+        specifier: ^6.0.0
+        version: 6.0.0(@capacitor/core@6.0.0)
+      '@capacitor/network':
+        specifier: ^6.0.0
+        version: 6.0.0(@capacitor/core@6.0.0)
       '@capacitor/preferences':
+        specifier: ^6.0.0
+        version: 6.0.0(@capacitor/core@6.0.0)
+      '@capacitor/share':
         specifier: ^6.0.0
         version: 6.0.0(@capacitor/core@6.0.0)
       '@tanstack/react-query':
@@ -309,13 +324,38 @@ packages:
   '@capacitor/core@6.0.0':
     resolution: {integrity: sha512-NvxIQsJcMiIV+Le1DilR2GGyQQbDInfXK1UywGROQ5mycdFlW5XoAPZ+MKnFGB123RoEgE3uhDGgwTXUmSlX9A==}
 
+  '@capacitor/device@6.0.0':
+    resolution: {integrity: sha512-3cV4XcH9pTWcstecyr8rNBQvFCsxYugJdPetk898airCbV1bqZSGF2YLSoPQj4BiDITSlNgwABNwNYMCNzs/gw==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
+
   '@capacitor/dialog@6.0.0':
     resolution: {integrity: sha512-TnkfngkfB+t9m6wM/NDCyOjencSHHFBB1rqTDgrcAyoyP+Fjmykg6iRD5W7j9v52vNY2BESPmp692uWNbh88zA==}
     peerDependencies:
       '@capacitor/core': ^6.0.0
 
+  '@capacitor/geolocation@6.0.0':
+    resolution: {integrity: sha512-8wrZe6gqfZmsCdvOvrqmezi2Pa8Nz6bQUFbDWsjUKHRzs+qreYNXngzhgKO83GEhHvodiJMnoDJrD2JeQt7FZg==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
+
+  '@capacitor/local-notifications@6.0.0':
+    resolution: {integrity: sha512-a/g/ZlPgaBXue374oNzGvvNZWNpnclfcLzfE/P/PjhHxdHsM7J3OK0IfmjrEsRiON4AEIga+dkHi5yBjNAHCFw==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
+
+  '@capacitor/network@6.0.0':
+    resolution: {integrity: sha512-igGbz3VZuchnfQ/kSFxMsQjLGvKYmEKYzK5RD5S7leLaoBox0B3ueW04yRI2HcGC+PSIo9F52qDL8J6qb1N0vg==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
+
   '@capacitor/preferences@6.0.0':
     resolution: {integrity: sha512-4A49UKEc/sgf28TFNwRX4Kx6G0oMeRC9btA2voaEuL2LZd2l8IMfAEFDIrfQWi5rYE6RWenEUexUTyiEZnYFvQ==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
+
+  '@capacitor/share@6.0.0':
+    resolution: {integrity: sha512-Doqvtxe9tejkjq+P9hZzDslR6VetM02R6N61GBavVBWkQj4N+xWNDA8zISG3PzuGBffGtTfHC6L0W+XySFY5nw==}
     peerDependencies:
       '@capacitor/core': ^6.0.0
 
@@ -4272,11 +4312,31 @@ snapshots:
     dependencies:
       tslib: 2.6.2
 
+  '@capacitor/device@6.0.0(@capacitor/core@6.0.0)':
+    dependencies:
+      '@capacitor/core': 6.0.0
+
   '@capacitor/dialog@6.0.0(@capacitor/core@6.0.0)':
     dependencies:
       '@capacitor/core': 6.0.0
 
+  '@capacitor/geolocation@6.0.0(@capacitor/core@6.0.0)':
+    dependencies:
+      '@capacitor/core': 6.0.0
+
+  '@capacitor/local-notifications@6.0.0(@capacitor/core@6.0.0)':
+    dependencies:
+      '@capacitor/core': 6.0.0
+
+  '@capacitor/network@6.0.0(@capacitor/core@6.0.0)':
+    dependencies:
+      '@capacitor/core': 6.0.0
+
   '@capacitor/preferences@6.0.0(@capacitor/core@6.0.0)':
+    dependencies:
+      '@capacitor/core': 6.0.0
+
+  '@capacitor/share@6.0.0(@capacitor/core@6.0.0)':
     dependencies:
       '@capacitor/core': 6.0.0
 

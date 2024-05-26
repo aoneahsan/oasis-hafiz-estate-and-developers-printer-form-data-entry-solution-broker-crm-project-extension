@@ -6,15 +6,13 @@ import {
   getIdToken,
   createUserWithEmailAndPassword
 } from 'firebase/auth';
-import {
-  getFirestore,
-  addDoc,
-  getDoc,
-  collection,
-  doc,
-  query
-} from 'firebase/firestore';
+import { getFirestore, addDoc, getDoc, collection } from 'firebase/firestore';
 import { IZOasisEntryForm } from '@/Types/oasis';
+import {
+  initializeAnalytics,
+  logEvent,
+  EventNameString
+} from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: ENVS.firebase.apiKey,
@@ -33,6 +31,7 @@ const __firebaseAuth = initializeAuth(_firebaseApp);
 //   type: 'LOCAL'
 // });
 const _firebaseFirestore = getFirestore(_firebaseApp);
+const _firebaseAnalytics = initializeAnalytics(_firebaseApp);
 
 export const frbSignInWithEmailAndPassword = async (
   email: string,
@@ -74,16 +73,64 @@ export const addOasisFormEntryInFirestore = async (data: IZOasisEntryForm) => {
   return _item.data();
 };
 
-export const getOasisFormEntryFromFirestore = async (
-  oasisFormEntryQRCode: string
+export const frbLogAnalyticsEvent = <T extends object>(
+  eventName: EventNameString = 'page_view',
+  eventParams: T
 ) => {
+  let windowDetails = {};
+  let userAgentDetails = {};
+
   try {
-    const _collectionRef = doc(_firebaseFirestore, 'oasis');
+    windowDetails = {
+      screen_width: window.screen.width,
+      screen_height: window.screen.height,
+      window_inner_width: window.innerWidth,
+      window_inner_height: window.innerHeight,
+      window_outer_width: window.outerWidth,
+      window_outer_height: window.outerHeight,
+      window_device_pixel_ratio: window.devicePixelRatio
+    };
+  } catch (error) {}
 
-    const _itemRef = await getDoc(_collectionRef);
+  try {
+    userAgentDetails = {
+      user_agent: navigator.userAgent,
+      user_agent_platform: navigator.platform,
+      user_agent_vendor: navigator.vendor,
+      user_agent_vendor_sub: navigator.vendorSub,
+      user_agent_app_code_name: navigator.appCodeName,
+      user_agent_app_name: navigator.appName,
+      user_agent_app_version: navigator.appVersion,
+      user_agent_product: navigator.product,
+      user_agent_product_sub: navigator.productSub,
+      user_agent_language: navigator.language,
+      user_agent_on_line: navigator.onLine,
+      user_agent_cookie_enabled: navigator.cookieEnabled,
+      user_agent_do_not_track: navigator.doNotTrack,
+      user_agent_hardware_concurrency: navigator.hardwareConcurrency,
+      user_agent_max_touch_points: navigator.maxTouchPoints,
+      user_agent_media_capabilities: navigator.mediaCapabilities,
+      user_agent_permissions: navigator.permissions,
+      user_agent_plugins: navigator.plugins,
+      user_agent_service_worker: navigator.serviceWorker,
+      user_agent_storage: navigator.storage,
+      user_agent_web_driver: navigator.webdriver
+    };
+  } catch (error) {}
 
-    return _itemRef.data();
-  } catch (error) {
-    return null;
-  }
+  logEvent(_firebaseAnalytics, eventName as string, {
+    windowDetails,
+    userAgentDetails,
+    ...eventParams
+  });
+};
+
+export const frbLogPageViewAnalyticsEvent = <T extends object>(
+  pagePath: string,
+  eventParams: T
+) => {
+  frbLogAnalyticsEvent('page_view', {
+    ...eventParams,
+    page_path: pagePath
+  });
 };

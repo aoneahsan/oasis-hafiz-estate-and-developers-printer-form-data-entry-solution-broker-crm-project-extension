@@ -127,33 +127,32 @@ const OasisEntryFormContent: React.FC = () => {
                   'serialNumber', // 3
                   'plotType', // 4
                   'plotSize', // 5
-                  'extraPercentageForLocationCategory', // 6
 
                   // Personal Information
-                  'applicantName', // 7
-                  'guardianName', // 8
-                  'relationWithGuardian', // 9
-                  'cnicNumber', // 10
-                  'passportNumber', // 11
-                  'mailAddress', // 12
-                  'permanentAddress', // 13
-                  'phoneNumber', // 14
-                  'mobileNumber', // 15
+                  'applicantName', // 6
+                  'guardianName', // 7
+                  'relationWithGuardian', // 8
+                  'cnicNumber', // 9
+                  'passportNumber', // 10
+                  'mailAddress', // 11
+                  'permanentAddress', // 12
+                  'phoneNumber', // 13
+                  'mobileNumber', // 14
 
                   // Nominee Information
-                  'nomineeName', // 16
-                  'nomineeGuardianName', // 17
-                  'nomineeRelationWithGuardian', // 18
-                  'nomineeCnicNumber', // 19
-                  'nomineeRelationWithApplicant', // 20
-                  'nomineeAddress', // 21
-                  'nomineePhoneNumber', // 22
-                  'nomineeMobileNumber', // 23
+                  'nomineeName', // 15
+                  'nomineeGuardianName', // 16
+                  'nomineeRelationWithGuardian', // 17
+                  'nomineeCnicNumber', // 18
+                  'nomineeRelationWithApplicant', // 19
+                  'nomineeAddress', // 20
+                  'nomineePhoneNumber', // 21
+                  'nomineeMobileNumber', // 22
 
                   // Payment Information
-                  'paymentMethod', // 24
+                  'paymentMethod', // 23
 
-                  'qrCodeNumber' // 25
+                  'qrCodeNumber' // 24
                 ],
                 values,
                 errors,
@@ -181,8 +180,7 @@ const OasisEntryFormContent: React.FC = () => {
                   zValidationRuleE.string, // 21
                   zValidationRuleE.string, // 22
                   zValidationRuleE.string, // 23
-                  zValidationRuleE.string, // 24
-                  zValidationRuleE.string // 25
+                  zValidationRuleE.string // 24
                 ]
               );
 

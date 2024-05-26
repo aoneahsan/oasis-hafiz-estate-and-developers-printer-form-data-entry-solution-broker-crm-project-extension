@@ -51,8 +51,8 @@ const HomePage: React.FC = () => {
 
               <p className='mt-4 pt-[1px] relative z-10 tracking-wide pb-[2px] font-semibold font-roboto-regular leading-[120%] text-[1rem] text-primary'>
                 Welcome to The Oasis by Hafiz Estate & Developers – Experience
-                the finest living in DHA. Contact us today to secure your dream
-                home!
+                the finest living in Lahore. Contact us today to secure your
+                dream home!
               </p>
 
               <div className='relative z-10 mb-20'>
