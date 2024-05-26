@@ -2,13 +2,13 @@
 
 vars:
   BUNDLE_ID:
-    default: com.zaions.invoiceGenerator
+    default: com.zaions.oasis
   PACKAGE_NAME:
-    default: com.zaions.invoiceGenerator
+    default: com.zaions.oasis
   PRODUCT_NAME:
-    default: "Invoice App"
+    default: "The Oasis"
   DISPLAY_NAME:
-    default: "Invoice App"
+    default: "The Oasis"
 
 platforms:
   ios:
