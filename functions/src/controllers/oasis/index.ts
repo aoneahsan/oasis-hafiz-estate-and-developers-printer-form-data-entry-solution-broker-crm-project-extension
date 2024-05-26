@@ -16,9 +16,10 @@ export const getOasisPlotDetails = async (req: Request, res: Response) => {
     if (_itemQrCodeHash?.trim()?.length > 0) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const _itemQrCode: any = (qrCodesHash as any)[_itemQrCodeHash];
+
       const _items = await fbDB
         .collection(ZTableNames.oasis)
-        .where('qrCodeNumber', '==', _itemQrCode)
+        .where('qrCodeNumber', '==', _itemQrCode + '')
         .get();
 
       if (_items?.docs?.length > 0) {

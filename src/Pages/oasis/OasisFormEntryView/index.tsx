@@ -29,6 +29,7 @@ const OasisFormEntryView: React.FC = () => {
       try {
         const _res = await axiosInstance.post(
           'https://default-qibwoacnxa-uc.a.run.app/zaions/oasis/get-plot-details',
+          // 'http://127.0.0.1:5001/shiraakat-oasis/us-central1/default/zaions/oasis/get-plot-details',
           {
             plotQrCode: oasisEntryQrCode
           }

@@ -18,6 +18,10 @@ import { productVector, productLogo } from '@/assets';
 const HomePage: React.FC = () => {
   const openContactUsUrl = (): void => {
     try {
+      window.open(
+        'https://zaions.com',
+        '_blank' // <- This is what makes it open in a new window.
+      );
     } catch (error) {
       reportCustomError(error);
     }
@@ -54,10 +58,12 @@ const HomePage: React.FC = () => {
               <div className='relative z-10 mb-20'>
                 <div className='flex justify-center w-full gap-5 pt-10 maxSm:flex-col lg:mt-11'>
                   <ZButton
-                    className='bg-primary rounded-[4px] py-[.5rem] text-[1rem] tracking-[1.2px] font-mont-heavy px-[1.5rem] font-black text-secondary'
+                    className='bg-primary rounded-[4px] py-[.5rem] text-[1rem] tracking-[1.2px] hidden font-mont-heavy px-[1.5rem] font-black text-secondary'
                     onClick={openContactUsUrl}
                   >
-                    Contact Us
+                    Software Developed by "Ahsan Mahmood" Manager at Zaions
+                    (https://zaions.com) - Contact Today to get your Web &
+                    Mobile App/Game Developed
                   </ZButton>
                 </div>
               </div>
