@@ -4,7 +4,9 @@
     "target": {
       "namespace": "android_app",
       "package_name": "com.zaions.oasis",
-      "sha256_cert_fingerprints": []
+      "sha256_cert_fingerprints": [
+        "65:AB:6B:DD:7B:4B:12:58:89:A5:87:93:2A:39:6C:20:A5:42:2E:D5:A9:41:65:3D:39:EB:8A:94:54:8B:1F:C4"
+      ]
     }
   }
 ]
